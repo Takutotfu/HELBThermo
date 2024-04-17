@@ -15,7 +15,6 @@ public class HelloApplication extends Application {
         stage.setTitle("HELBThermo");
         stage.setScene(scene);
         stage.show();
-        stage.setMaximized(true);
     }
 
     public static void main(String[] args) {
