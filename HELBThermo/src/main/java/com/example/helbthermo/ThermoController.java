@@ -5,7 +5,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 
-public class HelloController {
+public class ThermoController {
 
     @FXML
     private TextField currentTempField;

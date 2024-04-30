@@ -61,7 +61,7 @@
                         <!-- Default configuration for running with: mvn clean javafx:run -->
                         <id>default-cli</id>
                         <configuration>
-                            <mainClass>com.example.helbthermo/com.example.helbthermo.HelloApplication</mainClass>
+                            <mainClass>com.example.helbthermo/com.example.helbthermo.Main</mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>
                             <jlinkImageName>app</jlinkImageName>
@@ -79,7 +79,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.example.helbthermo.HelloApplication</mainClass>
+                            <mainClass>com.example.helbthermo.Main</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

@@ -93,7 +93,7 @@
         <GridPane hgap="5.0" vgap="5.0">
             <!-- Grid of 4x5 cells -->
             <children>
-                <!-- Row 1 -->
+                <!-- Row 0 -->
                 <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;" GridPane.columnIndex="0" GridPane.rowIndex="0">
                     <Label text="Cell 1" />
                 </Pane>
@@ -106,10 +106,10 @@
                 <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;" GridPane.columnIndex="3" GridPane.rowIndex="0">
                     <Label text="Cell 4" />
                 </Pane>
-                <!-- Row 2 -->
                 <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;" GridPane.columnIndex="4" GridPane.rowIndex="0">
                     <Label text="Cell 5" />
                 </Pane>
+                <!-- Row 1 -->
                 <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;" GridPane.columnIndex="0" GridPane.rowIndex="1">
                     <Label text="Cell 6" />
                 </Pane>
@@ -119,20 +119,19 @@
                 <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;" GridPane.columnIndex="2" GridPane.rowIndex="1">
                     <Label text="Cell 8" />
                 </Pane>
-                <!-- Row 3 -->
                 <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;" GridPane.columnIndex="3" GridPane.rowIndex="1">
                     <Label text="Cell 9" />
                 </Pane>
                 <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;" GridPane.columnIndex="4" GridPane.rowIndex="1">
                     <Label text="Cell 10" />
                 </Pane>
+                <!-- Row 2 -->
                 <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;" GridPane.columnIndex="0" GridPane.rowIndex="2">
                     <Label text="Cell 11" />
                 </Pane>
                 <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;" GridPane.columnIndex="1" GridPane.rowIndex="2">
                     <Label text="Cell 12" />
                 </Pane>
-                <!-- Row 4 -->
                 <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;" GridPane.columnIndex="2" GridPane.rowIndex="2">
                     <Label text="Cell 13" />
                 </Pane>
@@ -142,6 +141,7 @@
                 <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;" GridPane.columnIndex="4" GridPane.rowIndex="2">
                     <Label text="Cell 15" />
                 </Pane>
+                <!-- Row 3 -->
                 <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;" GridPane.columnIndex="0" GridPane.rowIndex="3">
                     <Label text="Cell 16" />
                 </Pane>
