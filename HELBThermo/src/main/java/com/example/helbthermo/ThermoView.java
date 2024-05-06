@@ -19,7 +19,7 @@ public class ThermoView {
         this.stage = stage;
     }
 
-    public void initView() {
+    public void initView(int rowCell, int colCell) {
         BorderPane root = new BorderPane();
         root.setPrefSize(1080, 720);
 
@@ -30,7 +30,7 @@ public class ThermoView {
         initLeftHBox(root);
 
         // Center
-        initCenterGridPane(root);
+        initCenterGridPane(root, rowCell, colCell);
 
         // Right
         VBox rightBox = new VBox();
@@ -48,20 +48,26 @@ public class ThermoView {
         stage.show();
     }
 
-    private void initCenterGridPane(BorderPane root) {
+    private void initCenterGridPane(BorderPane root, int rowCell, int colCell) {
         GridPane centerGrid = new GridPane();
+        centerGrid.setAlignment(Pos.CENTER);
         centerGrid.setHgap(5);
         centerGrid.setVgap(5);
 
-        for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < 5; j++) {
-                Pane cell = new Pane();
-                cell.setPrefSize(200, 200);
-                cell.setStyle("-fx-background-color: white;");
-                Label label = new Label("Cell " + (i * 5 + j + 1));
-                cell.getChildren().add(label);
-                centerGrid.add(cell, j, i);
+        if (colCell >= 3 && rowCell >= 3 && colCell <= 12 && rowCell <= 12) {
+            for (int i = 0; i < rowCell; i++) {
+                for (int j = 0; j < colCell; j++) {
+                    Button button = new Button();
+                    button.setPrefSize(50.0, 50.0);
+                    centerGrid.add(button, j, i);
+                }
             }
+        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Cell pane is oversize");
+
+            alert.showAndWait();
         }
 
         root.setCenter(centerGrid);
@@ -71,13 +77,14 @@ public class ThermoView {
         VBox leftBox = new VBox();
         leftBox.setAlignment(Pos.CENTER);
         leftBox.setPrefHeight(565);
-        leftBox.setPrefWidth(163);
+        leftBox.setPrefWidth(200);
         leftBox.setSpacing(20);
 
         // Ajout des marges à gauche et à droite
         BorderPane.setMargin(leftBox, new Insets(0, 30, 0, 30));
 
         HBox buttonBox = new HBox();
+        buttonBox.setAlignment(Pos.CENTER);
 
         Button playButton = new Button();
         playButton.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("icons/play.png"))));
@@ -93,12 +100,29 @@ public class ThermoView {
 
         buttonBox.getChildren().addAll(playButton, pauseButton, resetButton);
 
-        ListView<String> listView = new ListView<>(); // Placeholder for list of items
+        ScrollPane scrollPane = new ScrollPane();
+        scrollPane.setPrefHeight(400.0);
+        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
 
-        leftBox.getChildren().addAll(buttonBox, listView);
+        VBox buttonVBox = new VBox(); // Utiliser une VBox pour aligner verticalement les boutons
+        buttonVBox.setAlignment(Pos.CENTER); // Centrer le contenu
+        buttonVBox.setSpacing(20); // Espacement vertical entre les boutons
+
+        for (int i = 0; i < 6; i++) {
+            Button button = new Button();
+            button.setAlignment(Pos.CENTER);
+            button.setPrefSize(100.0, 100.0);
+            buttonVBox.getChildren().add(button); // Ajout du bouton à la VBox
+        }
+
+        scrollPane.setContent(buttonVBox);
+
+        leftBox.getChildren().addAll(buttonBox, scrollPane);
 
         root.setLeft(leftBox);
     }
+
+
 
     private void initTopHBox(BorderPane root) {
         HBox topBox = new HBox(20);

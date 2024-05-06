@@ -5,9 +5,9 @@ import javafx.stage.Stage;
 
 
 public class Main extends Application {
+
     @Override
     public void start(Stage stage) throws Exception {
-
         ThermoView view = new ThermoView(stage);
         ThermoController controller = new ThermoController(view);
 
