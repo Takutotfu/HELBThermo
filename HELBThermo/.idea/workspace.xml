@@ -16,6 +16,12 @@
       <change afterPath="$PROJECT_DIR$/mvnw.cmd" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/run.sh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/helbthermo/Cell.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/helbthermo/CellView.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/helbthermo/ConfirmModificationView.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/helbthermo/DeadCell.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/helbthermo/HELBThermo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/helbthermo/HeatSourceCell.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/java/com/example/helbthermo/Main.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/java/com/example/helbthermo/ThermoController.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/java/com/example/helbthermo/ThermoView.java" afterDir="false" />
@@ -100,6 +106,7 @@
       <workItem from="1714489401779" duration="1770000" />
       <workItem from="1714491187191" duration="2950000" />
       <workItem from="1715018707291" duration="6307000" />
+      <workItem from="1715077081164" duration="14043000" />
     </task>
     <servers />
   </component>

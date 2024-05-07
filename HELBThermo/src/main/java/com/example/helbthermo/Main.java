@@ -10,7 +10,6 @@ public class Main extends Application {
     public void start(Stage stage) throws Exception {
         ThermoView view = new ThermoView(stage);
         ThermoController controller = new ThermoController(view);
-
     }
 
     public static void main(String[] args) {
