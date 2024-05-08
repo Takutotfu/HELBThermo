@@ -1,7 +1,7 @@
 package com.example.helbthermo;
 
 public class Cell {
-    public static final double SIZE = 50.0;
+    public static final double SIZE = 100.0;
 
     private final int X;
     private final int Y;

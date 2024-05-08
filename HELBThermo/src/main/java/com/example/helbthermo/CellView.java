@@ -24,19 +24,20 @@ public class CellView {
     private static Cell newCell;
 
     public static Cell display(Cell cell) {
-        // TODO : DeadCell
         if (cell instanceof DeadCell) {
             isDeadCellCheck = true;
+            isHeatSourceCheck = false;
         }
         if (cell instanceof HeatSourceCell) {
             isHeatSourceCheck = true;
+            isDeadCellCheck = false;
         }
         temperatureCell = String.valueOf(cell.getTemperature());
         newCell = cell;
 
         Stage window = new Stage();
         window.initModality(Modality.APPLICATION_MODAL); //focus sur la fenetre
-        window.setTitle("Cell settings ("+cell.getX() + ";" + cell.getY() + ")");
+        window.setTitle("Cell settings (" + cell.getX() + ";" + cell.getY() + ")");
         window.setMinWidth(WIDTH);
         window.setMinHeight(HEIGHT);
         window.setResizable(false);
@@ -60,8 +61,23 @@ public class CellView {
         temperatureInput.setPrefWidth(45);
         temperatureInput.setAlignment(Pos.CENTER_RIGHT);
 
+
         Label temperatureLabel = new Label(" : Set Temperature");
         temperatureLabel.setAlignment(Pos.CENTER_LEFT);
+
+        deadCellCheckBox.setOnAction(e -> {
+            isDeadCellCheck = true;
+            isHeatSourceCheck = false;
+            heatSourceCheckBox.setSelected(false);
+            temperatureInput.setDisable(true);
+        });
+
+        heatSourceCheckBox.setOnAction(e -> {
+            isHeatSourceCheck = true;
+            isDeadCellCheck = false;
+            deadCellCheckBox.setSelected(false);
+            temperatureInput.setDisable(false);
+        });
 
         HBox temperatureBox = new HBox();
         temperatureBox.getChildren().addAll(temperatureInput, temperatureLabel);
@@ -71,7 +87,6 @@ public class CellView {
         setButton.setAlignment(Pos.CENTER);
 
         setButton.setOnAction(e -> {
-            // TODO : Enregistrer les valeurs modifiées
             isModificationCanceled = ConfirmModificationView.display();
             if (isModificationCanceled) {
                 if (heatSourceCheckBox.isSelected()) {
@@ -85,6 +100,8 @@ public class CellView {
                     }
                 } else if (!heatSourceCheckBox.isSelected() && deadCellCheckBox.isSelected()) {
                     newCell = new DeadCell(cell.getX(), cell.getY());
+                } else if (!(deadCellCheckBox.isSelected() && heatSourceCheckBox.isSelected())) {
+                    newCell = new Cell(cell.getX(), cell.getY());
                 }
 
                 window.close();

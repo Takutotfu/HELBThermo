@@ -14,8 +14,6 @@ import javafx.stage.Stage;
 
 import java.util.HashMap;
 
-// TODO : CELL_SIZE dans la classe Cell pour initCenterGridPane & initLeftHBox
-
 public class ThermoView {
     private final int HEIGHT = 720;
     private final int WIDTH = 1280;
@@ -23,23 +21,21 @@ public class ThermoView {
     private final int LABEL_SIZE = 150;
     private final int MAX_GRIDPANE_SIZE = 12;
     private final int MIN_GRIDPANE_SIZE = 3;
-
+    private final HashMap<String, Button> buttonCellMap;
+    private final HashMap<String, Button> buttonHeatCellMap;
+    private final Stage stage;
     private int rowCell, colCell;
-    private HashMap<String, Button> buttonCellMap;
-
-    private Stage stage;
-    private Scene scene;
-    private HELBThermo helbThermo;
+    private VBox heatCellsBox;
 
     public ThermoView(Stage stage) {
         this.stage = stage;
         this.buttonCellMap = new HashMap<>();
+        this.buttonHeatCellMap = new HashMap<>();
     }
 
-    public void initView(int rowCell, int colCell, HELBThermo helbThermo) {
+    public void initView(int rowCell, int colCell) {
         this.rowCell = rowCell;
         this.colCell = colCell;
-        this.helbThermo = helbThermo;
 
         BorderPane root = new BorderPane();
         root.setPrefSize(WIDTH, HEIGHT);
@@ -53,6 +49,10 @@ public class ThermoView {
         // Center
         initCenterGridPane(root, rowCell, colCell);
 
+        for (String button : buttonCellMap.keySet()) {
+            System.out.println(button);
+        }
+
         // Right
         VBox rightBox = new VBox();
         rightBox.setPrefWidth(4 * SPACING);
@@ -63,7 +63,7 @@ public class ThermoView {
         bottomBox.setPrefHeight(4 * SPACING);
         root.setBottom(bottomBox);
 
-        scene = new Scene(root);
+        Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.setTitle("HELBThermo");
         stage.show();
@@ -72,14 +72,13 @@ public class ThermoView {
     private void initCenterGridPane(BorderPane root, int rowCell, int colCell) {
         GridPane centerGrid = new GridPane();
         centerGrid.setAlignment(Pos.CENTER);
-        centerGrid.setHgap(SPACING / 4);
-        centerGrid.setVgap(SPACING / 4);
+        centerGrid.setHgap(SPACING / 4.0);
+        centerGrid.setVgap(SPACING / 4.0);
 
-        if (colCell >= MIN_GRIDPANE_SIZE && rowCell >= MIN_GRIDPANE_SIZE
-                && colCell <= MAX_GRIDPANE_SIZE && rowCell <= MAX_GRIDPANE_SIZE) {
+        if (ThermoController.COLUMN_CELL >= MIN_GRIDPANE_SIZE && ThermoController.COLUMN_CELL <= MAX_GRIDPANE_SIZE) {
 
-            for (int i = 0; i < rowCell; i++) {
-                for (int j = 0; j < colCell; j++) {
+            for (int i = 0; i < colCell; i++) {
+                for (int j = 0; j < rowCell; j++) {
                     Button button = new Button();
                     button.setPrefSize(Cell.SIZE, Cell.SIZE);
                     buttonCellMap.put("" + i + j, button);
@@ -128,18 +127,11 @@ public class ThermoView {
         scrollPane.setPrefHeight(SPACING * 30);
         scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
 
-        VBox buttonVBox = new VBox(); // Utiliser une VBox pour aligner verticalement les boutons
-        buttonVBox.setAlignment(Pos.CENTER); // Centrer le contenu
-        buttonVBox.setSpacing(SPACING); // Espacement vertical entre les boutons
+        heatCellsBox = new VBox(); // Utiliser une VBox pour aligner verticalement les boutons
+        heatCellsBox.setAlignment(Pos.CENTER); // Centrer le contenu
+        heatCellsBox.setSpacing(SPACING); // Espacement vertical entre les boutons
 
-        for (int i = 0; i < 6; i++) {
-            Button button = new Button();
-            button.setAlignment(Pos.CENTER);
-            button.setPrefSize(100.0, 100.0);
-            buttonVBox.getChildren().add(button); // Ajout du bouton à la VBox
-        }
-
-        scrollPane.setContent(buttonVBox);
+        scrollPane.setContent(heatCellsBox);
 
         leftBox.getChildren().addAll(buttonBox, scrollPane);
 
@@ -180,18 +172,44 @@ public class ThermoView {
         root.setTop(topBox);
     }
 
+    public void addHeatCellInBox(String cellId) {
+        if (!buttonHeatCellMap.containsKey(cellId)) {
+            Button cell = new Button(getButton(cellId).getText());
+            cell.setStyle("-fx-background-color: #ff0000; ");
+            cell.setAlignment(Pos.CENTER);
+            cell.setPrefSize(Cell.SIZE * 1.5, Cell.SIZE * 1.5);
+
+            buttonHeatCellMap.put(cellId, cell);
+            heatCellsBox.getChildren().add(cell);
+        }
+    }
+
     public void setupHeatSourceCell(HeatSourceCell heatSourceCell) {
-        String key = ""+heatSourceCell.getX() + heatSourceCell.getY();
+        String key = "" + heatSourceCell.getX() + heatSourceCell.getY();
         Button cell = buttonCellMap.get(key);
         cell.setText(String.valueOf(heatSourceCell.getTemperature()));
         cell.setStyle("-fx-background-color: #ff0000; ");
     }
 
     public void setupDeadCell(DeadCell deadCell) {
-        String key = ""+deadCell.getX() + deadCell.getY();
+        String key = "" + deadCell.getX() + deadCell.getY();
         Button cell = buttonCellMap.get(key);
+        cell.setText("");
         cell.setStyle("-fx-background-color: #000000; ");
     }
 
-    public Button getButton(String cellId) { return buttonCellMap.get(cellId); }
+    public void resetCell(Cell cell) {
+        String key = "" + cell.getX() + cell.getY();
+        Button newCell = buttonCellMap.get(key);
+        newCell.setText("");
+        newCell.setStyle("");
+        if (buttonHeatCellMap.containsKey(key)) {
+            heatCellsBox.getChildren().remove(buttonHeatCellMap.get(key));
+            buttonHeatCellMap.remove(key);
+        }
+    }
+
+    public Button getButton(String cellId) {
+        return buttonCellMap.get(cellId);
+    }
 }
