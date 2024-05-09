@@ -6,10 +6,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.text.DecimalFormat;
@@ -169,10 +167,10 @@ public class ThermoView {
         root.setTop(topBox);
     }
 
-    public void addHeatCellInBox(String cellId) {
+    public void addHeatCellInBox(String cellId, double temp) {
         if (!buttonHeatCellMap.containsKey(cellId)) {
             Button cell = new Button(getCellButton(cellId).getText());
-            cell.setStyle("-fx-background-color: #ff0000; ");
+            cell.setStyle("-fx-background-color: "+toRGBCode(getColorFromIntensity(temp)));
             cell.setAlignment(Pos.CENTER);
             cell.setPrefSize(Cell.SIZE * 1.5, Cell.SIZE * 1.5);
 
@@ -180,7 +178,7 @@ public class ThermoView {
             heatCellsBox.getChildren().add(cell);
         } else {
             buttonHeatCellMap.get(cellId).setText(getCellButton(cellId).getText());
-            buttonHeatCellMap.get(cellId).setStyle("-fx-background-color: #ff0000; ");
+            buttonHeatCellMap.get(cellId).setStyle("-fx-background-color: "+toRGBCode(getColorFromIntensity(temp)));
         }
     }
 
@@ -189,7 +187,8 @@ public class ThermoView {
         Button heatCell = buttonHeatCellMap.get(cellId);
 
         cell.setText(new DecimalFormat("#.##").format(temp));
-        cell.setStyle("-fx-background-color: #ff0000; ");
+
+        cell.setStyle("-fx-background-color: "+toRGBCode(getColorFromIntensity(temp)));
     }
 
     public void disableHeatSourceCell(String cellId) {
@@ -224,7 +223,22 @@ public class ThermoView {
     }
 
     public void updateCell(String cellId, double temp) {
-        buttonCellMap.get(cellId).setText(new DecimalFormat("#.##").format(temp));
+        Button cell = buttonCellMap.get(cellId);
+        cell.setText(new DecimalFormat("#.##").format(temp));
+        cell.setStyle("-fx-background-color: "+toRGBCode(getColorFromIntensity(temp)));
+    }
+
+    private Color getColorFromIntensity(double intensity) {
+        intensity = intensity / 100.0;
+        double redIntensity = ((1 - intensity) * 255);
+        return Color.rgb(255, (int) redIntensity, (int) redIntensity);
+    }
+
+    private String toRGBCode(Color color) {
+        int r = (int) (color.getRed() * 255);
+        int g = (int) (color.getGreen() * 255);
+        int b = (int) (color.getBlue() * 255);
+        return String.format("#%02X%02X%02X", r, g, b);
     }
 
     public Button getPlayButton() {return playButton;}

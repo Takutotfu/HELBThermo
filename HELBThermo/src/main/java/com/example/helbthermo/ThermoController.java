@@ -9,9 +9,8 @@ import java.util.HashMap;
 
 public class ThermoController {
 
-    public static final int COLUMN_CELL = 5;
-    public static final int ROW_CELL = 4;
-
+    public static final int COLUMN_CELL = 10;
+    public static final int ROW_CELL = 8;
 
     private final int timerDuration = 1;
 
@@ -58,6 +57,7 @@ public class ThermoController {
         view.getPauseButton().setOnAction(event -> {
             if (isSimulationStarted) {
                 timeline.pause();
+                isSimulationPaused = true;
             }
         });
 
@@ -66,6 +66,8 @@ public class ThermoController {
             Thermo.resetSimulation(view);
             cells.clear();
             initialization();
+            isSimulationStarted = false;
+            isSimulationPaused = true;
         });
     }
 
@@ -81,12 +83,13 @@ public class ThermoController {
         for (Cell cell : cells.values()) {
             String key = "" + cell.getX() + cell.getY();
             view.getCellButton(key).setOnAction(e -> {
+                timeline.pause();
                 Cell newCell = CellView.display(cell);
                 if (newCell instanceof HeatSourceCell) {
                     HeatSourceCell heatSourceCell = (HeatSourceCell) newCell;
                     changeCellToHeatSourceCell(heatSourceCell);
                     view.setupHeatSourceCell(key, newCell.getTemperature());
-                    view.addHeatCellInBox(key);
+                    view.addHeatCellInBox(key, newCell.getTemperature());
                     setHeatCellActions(key);
                 } else if (newCell instanceof DeadCell) {
                     DeadCell deadCell = (DeadCell) newCell;
@@ -97,6 +100,9 @@ public class ThermoController {
                     resetCell(newCell);
                 }
                 setCellButtonsActions();
+                if (isSimulationStarted) {
+                    timeline.play();
+                }
             });
         }
     }
@@ -108,7 +114,7 @@ public class ThermoController {
                 if (!cell.isActivated()) {
                     cell.setActivated(true);
                     view.setupHeatSourceCell(key, cell.getTemperature());
-                    view.addHeatCellInBox(key);
+                    view.addHeatCellInBox(key, cell.getTemperature());
                 } else {
                     cell.setActivated(false);
                     view.disableHeatSourceCell(key);

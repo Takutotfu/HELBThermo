@@ -6,7 +6,7 @@ import java.text.DecimalFormat;
 import java.util.HashMap;
 
 public class Thermo {
-    public static final int TEMP_EXT = 3; // 0°C
+    public static final int TEMP_EXT = 29; // 18°C
 
     private static int timer = 0;
     private static int cost = 0;
