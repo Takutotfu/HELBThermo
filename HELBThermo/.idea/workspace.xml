@@ -22,6 +22,7 @@
       <change afterPath="$PROJECT_DIR$/src/main/java/com/example/helbthermo/DeadCell.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/java/com/example/helbthermo/HeatSourceCell.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/java/com/example/helbthermo/Main.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/helbthermo/Thermo.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/java/com/example/helbthermo/ThermoController.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/java/com/example/helbthermo/ThermoView.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/java/module-info.java" afterDir="false" />
@@ -106,7 +107,8 @@
       <workItem from="1714491187191" duration="2950000" />
       <workItem from="1715018707291" duration="6307000" />
       <workItem from="1715077081164" duration="14542000" />
-      <workItem from="1715190352106" duration="14057000" />
+      <workItem from="1715190352106" duration="14089000" />
+      <workItem from="1715252293040" duration="16295000" />
     </task>
     <servers />
   </component>

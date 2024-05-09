@@ -10,6 +10,8 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.text.DecimalFormat;
+
 public class CellView {
     private static final int HEIGHT = 300;
     private static final int WIDTH = 230;
@@ -32,7 +34,7 @@ public class CellView {
             isHeatSourceCheck = true;
             isDeadCellCheck = false;
         }
-        temperatureCell = String.valueOf(cell.getTemperature());
+        temperatureCell = new DecimalFormat("#.##").format(cell.getTemperature());
         newCell = cell;
 
         Stage window = new Stage();

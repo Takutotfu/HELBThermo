@@ -12,15 +12,16 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.text.DecimalFormat;
 import java.util.HashMap;
 
 public class ThermoView {
-    private final int HEIGHT = 720;
-    private final int WIDTH = 1280;
-    private final int SPACING = 20;
-    private final int LABEL_SIZE = 150;
-    private final int MAX_GRIDPANE_SIZE = 12;
-    private final int MIN_GRIDPANE_SIZE = 3;
+    private final int height = 720;
+    private final int width = 1280;
+    private final int spacing = 20;
+    private final int labelSize = 150;
+    private final int maxGridpaneSize = 12;
+    private final int minGridpaneSize = 3;
 
     private final HashMap<String, Button> buttonCellMap;
     private final HashMap<String, Button> buttonHeatCellMap;
@@ -38,7 +39,7 @@ public class ThermoView {
 
     public void initView() {
         BorderPane root = new BorderPane();
-        root.setPrefSize(WIDTH, HEIGHT);
+        root.setPrefSize(width, height);
 
         // Top
         initTopHBox(root);
@@ -51,12 +52,12 @@ public class ThermoView {
 
         // Right
         VBox rightBox = new VBox();
-        rightBox.setPrefWidth(4 * SPACING);
+        rightBox.setPrefWidth(4 * spacing);
         root.setRight(rightBox);
 
         // Bottom
         VBox bottomBox = new VBox();
-        bottomBox.setPrefHeight(4 * SPACING);
+        bottomBox.setPrefHeight(4 * spacing);
         root.setBottom(bottomBox);
 
         Scene scene = new Scene(root);
@@ -68,13 +69,14 @@ public class ThermoView {
     private void initCenterGridPane(BorderPane root) {
         GridPane centerGrid = new GridPane();
         centerGrid.setAlignment(Pos.CENTER);
-        centerGrid.setHgap(SPACING / 4.0);
-        centerGrid.setVgap(SPACING / 4.0);
+        centerGrid.setHgap(spacing / 4.0);
+        centerGrid.setVgap(spacing / 4.0);
 
-        if (ThermoController.COLUMN_CELL >= MIN_GRIDPANE_SIZE && ThermoController.COLUMN_CELL <= MAX_GRIDPANE_SIZE) {
+        if (ThermoController.COLUMN_CELL >= minGridpaneSize && ThermoController.COLUMN_CELL <= maxGridpaneSize
+                && ThermoController.ROW_CELL >= minGridpaneSize && ThermoController.ROW_CELL <= maxGridpaneSize) {
 
-            for (int i = 0; i < ThermoController.COLUMN_CELL; i++) {
-                for (int j = 0; j < ThermoController.ROW_CELL; j++) {
+            for (int i = 0; i < ThermoController.ROW_CELL; i++) {
+                for (int j = 0; j < ThermoController.COLUMN_CELL; j++) {
                     Button button = new Button();
                     button.setPrefSize(Cell.SIZE, Cell.SIZE);
                     buttonCellMap.put("" + i + j, button);
@@ -96,36 +98,36 @@ public class ThermoView {
     private void initLeftHBox(BorderPane root) {
         VBox leftBox = new VBox();
         leftBox.setAlignment(Pos.CENTER);
-        leftBox.setPrefWidth(10 * SPACING);
-        leftBox.setSpacing(SPACING);
+        leftBox.setPrefWidth(10 * spacing);
+        leftBox.setSpacing(spacing);
 
         // Ajout des marges à gauche et à droite
-        BorderPane.setMargin(leftBox, new Insets(0, SPACING, 0, 2 * SPACING));
+        BorderPane.setMargin(leftBox, new Insets(0, spacing, 0, 2 * spacing));
 
         HBox buttonBox = new HBox();
         buttonBox.setAlignment(Pos.CENTER);
 
         playButton = new Button();
         playButton.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("icons/play.png"))));
-        HBox.setMargin(playButton, new Insets(0, 0, 0, SPACING / 2)); // Marge à droite de 10 pixels
+        HBox.setMargin(playButton, new Insets(0, 0, 0, spacing / 2)); // Marge à droite de 10 pixels
 
         pauseButton = new Button();
         pauseButton.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("icons/pause.png"))));
-        HBox.setMargin(pauseButton, new Insets(0, 0, 0, SPACING / 2)); // Marge à droite de 10 pixels
+        HBox.setMargin(pauseButton, new Insets(0, 0, 0, spacing / 2)); // Marge à droite de 10 pixels
 
         resetButton = new Button();
         resetButton.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("icons/reset.png"))));
-        HBox.setMargin(resetButton, new Insets(0, 0, 0, SPACING / 2)); // Marge à droite de 10 pixels
+        HBox.setMargin(resetButton, new Insets(0, 0, 0, spacing / 2)); // Marge à droite de 10 pixels
 
         buttonBox.getChildren().addAll(playButton, pauseButton, resetButton);
 
         ScrollPane scrollPane = new ScrollPane();
-        scrollPane.setPrefHeight(SPACING * 30);
+        scrollPane.setPrefHeight(spacing * 30);
         scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
 
         heatCellsBox = new VBox(); // Utiliser une VBox pour aligner verticalement les boutons
         heatCellsBox.setAlignment(Pos.CENTER); // Centrer le contenu
-        heatCellsBox.setSpacing(SPACING); // Espacement vertical entre les boutons
+        heatCellsBox.setSpacing(spacing); // Espacement vertical entre les boutons
 
         scrollPane.setContent(heatCellsBox);
 
@@ -135,31 +137,31 @@ public class ThermoView {
     }
 
     private void initTopHBox(BorderPane root) {
-        HBox topBox = new HBox(SPACING);
-        topBox.setSpacing(SPACING);
-        topBox.setPrefHeight(5 * SPACING);
-        topBox.setPrefWidth(10 * SPACING);
+        HBox topBox = new HBox(spacing);
+        topBox.setSpacing(spacing);
+        topBox.setPrefHeight(5 * spacing);
+        topBox.setPrefWidth(10 * spacing);
         topBox.setAlignment(Pos.CENTER);
 
-        timeBox = new Button("Temps : ");
-        timeBox.setPrefWidth(LABEL_SIZE);
+        timeBox = new Button("Temps : 0sec");
+        timeBox.setPrefWidth(labelSize);
         timeBox.setAlignment(Pos.CENTER);
 
-        priceBox = new Button("€ : ");
-        priceBox.setPrefWidth(LABEL_SIZE);
+        priceBox = new Button("€ : 0€");
+        priceBox.setPrefWidth(labelSize);
         priceBox.setAlignment(Pos.CENTER);
 
-        extTempBox = new Button("T° ext. : ");
-        extTempBox.setPrefWidth(LABEL_SIZE);
+        extTempBox = new Button("T° ext. : 0°C");
+        extTempBox.setPrefWidth(labelSize);
         extTempBox.setAlignment(Pos.CENTER);
 
-        avgTempBox = new Button("T° moy. : ");
-        avgTempBox.setPrefWidth(LABEL_SIZE);
+        avgTempBox = new Button("T° moy. : 0°C");
+        avgTempBox.setPrefWidth(labelSize);
         avgTempBox.setAlignment(Pos.CENTER);
 
         MenuButton modeMenu = new MenuButton("Chauffe Mode");
         modeMenu.getItems().addAll(new MenuItem("Mode Manuel"), new MenuItem("Mode Successif"), new MenuItem("Mode Target"));
-        modeMenu.setPrefSize(LABEL_SIZE, SPACING);
+        modeMenu.setPrefSize(labelSize, spacing);
         modeMenu.setAlignment(Pos.CENTER);
 
         topBox.getChildren().addAll(timeBox, priceBox, extTempBox, avgTempBox, modeMenu);
@@ -176,14 +178,26 @@ public class ThermoView {
 
             buttonHeatCellMap.put(cellId, cell);
             heatCellsBox.getChildren().add(cell);
+        } else {
+            buttonHeatCellMap.get(cellId).setText(getCellButton(cellId).getText());
+            buttonHeatCellMap.get(cellId).setStyle("-fx-background-color: #ff0000; ");
         }
     }
 
-    public void setupHeatSourceCell(HeatSourceCell heatSourceCell) {
-        String key = "" + heatSourceCell.getX() + heatSourceCell.getY();
-        Button cell = buttonCellMap.get(key);
-        cell.setText(String.valueOf(heatSourceCell.getTemperature()));
+    public void setupHeatSourceCell(String cellId, double temp) {
+        Button cell = buttonCellMap.get(cellId);
+        Button heatCell = buttonHeatCellMap.get(cellId);
+
+        cell.setText(new DecimalFormat("#.##").format(temp));
         cell.setStyle("-fx-background-color: #ff0000; ");
+    }
+
+    public void disableHeatSourceCell(String cellId) {
+        Button buttonHeatCell = buttonHeatCellMap.get(cellId);
+        Button cell = buttonCellMap.get(cellId);
+
+        buttonHeatCell.setStyle("-fx-background-color: #4c4c4c; ");
+        cell.setStyle("-fx-background-color: #4c4c4c; ");
     }
 
     public void setupDeadCell(DeadCell deadCell) {
@@ -193,8 +207,7 @@ public class ThermoView {
         cell.setStyle("-fx-background-color: #000000; ");
     }
 
-    public void resetCell(Cell cell) {
-        String key = "" + cell.getX() + cell.getY();
+    public void resetCell(String key) {
         Button newCell = buttonCellMap.get(key);
         newCell.setText("");
         newCell.setStyle("");
@@ -204,36 +217,31 @@ public class ThermoView {
         }
     }
 
-    public Button getPlayButton() {
-        return playButton;
+    public void resetView() {
+        for (String key : buttonCellMap.keySet()) {
+            resetCell(key);
+        }
     }
 
-    public Button getPauseButton() {
-        return pauseButton;
+    public void updateCell(String cellId, double temp) {
+        buttonCellMap.get(cellId).setText(new DecimalFormat("#.##").format(temp));
     }
 
-    public Button getResetButton() {
-        return resetButton;
-    }
+    public Button getPlayButton() {return playButton;}
 
-    public Button getAvgTempBox() {
-        return avgTempBox;
-    }
+    public Button getPauseButton() {return pauseButton;}
 
-    public Button getExtTempBox() {
-        return extTempBox;
-    }
+    public Button getResetButton() {return resetButton;}
 
-    public Button getPriceBox() {
-        return priceBox;
-    }
+    public Button getAvgTempBox() {return avgTempBox;}
 
-    public Button getTimeBox() {
-        return timeBox;
-    }
+    public Button getExtTempBox() {return extTempBox;}
 
+    public Button getPriceBox() {return priceBox;}
 
-    public Button getCellButton(String cellId) {
-        return buttonCellMap.get(cellId);
-    }
+    public Button getTimeBox() {return timeBox;}
+
+    public Button getCellButton(String cellId) {return buttonCellMap.get(cellId);}
+
+    public Button getHeatCellButton(String cellId) {return buttonHeatCellMap.get(cellId);}
 }

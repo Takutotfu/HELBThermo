@@ -6,7 +6,7 @@ public class Cell {
     private final int X;
     private final int Y;
 
-    private int temperature;
+    private double temperature;
 
     public Cell(int x, int y) {
         this.X = x;
@@ -18,7 +18,7 @@ public class Cell {
 
     public int getY() { return Y; }
 
-    public int getTemperature() { return temperature; }
+    public double getTemperature() { return temperature; }
 
-    public void setTemperature(int temperature) { this.temperature = temperature; }
+    public void setTemperature(double temperature) { this.temperature = temperature; }
 }
