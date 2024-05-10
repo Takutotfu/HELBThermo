@@ -11,7 +11,7 @@ public class Cell {
     public Cell(int x, int y) {
         this.X = x;
         this.Y = y;
-        this.temperature = 0;
+        this.temperature = Thermo.TEMP_EXT;
     }
 
     public int getX() { return X; }

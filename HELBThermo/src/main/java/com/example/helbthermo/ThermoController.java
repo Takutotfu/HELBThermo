@@ -9,8 +9,8 @@ import java.util.HashMap;
 
 public class ThermoController {
 
-    public static final int COLUMN_CELL = 10;
-    public static final int ROW_CELL = 8;
+    public static final int COLUMN_CELL = 5;
+    public static final int ROW_CELL = 4;
 
     private final int timerDuration = 1;
 
@@ -19,7 +19,6 @@ public class ThermoController {
     // TODO: cells into factory
     private final HashMap<String, Cell> cells;
     private boolean isSimulationStarted = false;
-    private boolean isSimulationPaused = !isSimulationStarted;
 
     private Timeline timeline;
 
@@ -30,8 +29,8 @@ public class ThermoController {
         this.cells = new HashMap<>();
         this.timeline = new Timeline();
 
-        initialization();
         view.initView();
+        initialization();
         setCellButtonsActions();
         setLeftButtonsActions();
     }
@@ -39,7 +38,18 @@ public class ThermoController {
     private void initialization() {
         for (int i = 0; i < ThermoController.ROW_CELL; i++) {
             for (int j = 0; j < ThermoController.COLUMN_CELL; j++) {
-                cells.put("" + i + j, new Cell(i, j));
+                if ((i == 0 && j == 0)
+                        || (i == 0 && j == ThermoController.COLUMN_CELL - 1)
+                        || (i == ThermoController.ROW_CELL - 1 && j == 0)
+                        || (i == ThermoController.ROW_CELL - 1 && j == ThermoController.COLUMN_CELL - 1)) {
+                    String key = "" + i + j;
+                    cells.put(key, new HeatSourceCell(i, j, 0.0));
+                    view.setupHeatSourceCell(key, 0.0);
+                    view.addHeatCellInBox(key, 0.0);
+                    setHeatCellActions(key);
+                } else {
+                    cells.put("" + i + j, new Cell(i, j));
+                }
             }
         }
     }
@@ -57,7 +67,7 @@ public class ThermoController {
         view.getPauseButton().setOnAction(event -> {
             if (isSimulationStarted) {
                 timeline.pause();
-                isSimulationPaused = true;
+                isSimulationStarted = false;
             }
         });
 
@@ -67,7 +77,6 @@ public class ThermoController {
             cells.clear();
             initialization();
             isSimulationStarted = false;
-            isSimulationPaused = true;
         });
     }
 
@@ -110,33 +119,30 @@ public class ThermoController {
     private void setHeatCellActions(String key) {
         view.getHeatCellButton(key).setOnAction(e -> {
             HeatSourceCell cell = (HeatSourceCell) cells.get(key);
-            if (cell != null) {
-                if (!cell.isActivated()) {
-                    cell.setActivated(true);
-                    view.setupHeatSourceCell(key, cell.getTemperature());
-                    view.addHeatCellInBox(key, cell.getTemperature());
-                } else {
-                    cell.setActivated(false);
-                    view.disableHeatSourceCell(key);
-                }
+            if (!cell.isActivated()) {
+                cell.setActivated(true);
+                view.unableHeatSourceCell(key, cell.getHeatTemperature());
+            } else {
+                cell.setActivated(false);
+                view.disableHeatSourceCell(key);
             }
         });
     }
 
     public void changeCellToHeatSourceCell(HeatSourceCell heatSourceCell) {
-        String key = ""+heatSourceCell.getX() + heatSourceCell.getY();
+        String key = "" + heatSourceCell.getX() + heatSourceCell.getY();
         cells.remove(key);
         cells.put(key, heatSourceCell);
     }
 
     public void changeCellToDeadCell(DeadCell deadCell) {
-        String key = ""+deadCell.getX() + deadCell.getY();
+        String key = "" + deadCell.getX() + deadCell.getY();
         cells.remove(key);
-        cells.put(key,deadCell);
+        cells.put(key, deadCell);
     }
 
     public void resetCell(Cell cell) {
-        String key = ""+cell.getX() + cell.getY();
+        String key = "" + cell.getX() + cell.getY();
         cells.remove(key);
         cells.put(key, cell);
     }

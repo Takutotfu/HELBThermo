@@ -6,12 +6,11 @@ import java.text.DecimalFormat;
 import java.util.HashMap;
 
 public class Thermo {
-    public static final int TEMP_EXT = 29; // 18°C
+    public static final int TEMP_EXT = 3; //°C
 
     private static int timer = 0;
     private static int cost = 0;
     private static double avgTemp = 0;
-
 
     public static void simulation(ThermoView view, HashMap<String, Cell> cells) {
         Button timeBox = view.getTimeBox();
@@ -30,7 +29,7 @@ public class Thermo {
         extTempBox.setText("T° ext. : " + TEMP_EXT + "°C");
 
         for (Cell cell : cells.values()) {
-            if (!(cell instanceof HeatSourceCell) && !(cell instanceof DeadCell)) {
+            if (!(cell instanceof DeadCell)) {
                 int x = cell.getX();
                 int y = cell.getY();
                 newTemp = cell.getTemperature();
@@ -125,12 +124,24 @@ public class Thermo {
                             + cells.get(leftCellKey).getTemperature()) / 9;
                 }
 
+                if (cell instanceof HeatSourceCell) {
+                    HeatSourceCell heatSourceCell = (HeatSourceCell) cell;
+
+                    if (heatSourceCell.isActivated()) {
+                        newTemp = heatSourceCell.getHeatTemperature();
+                    }
+
+                    cost += (int) (timer * (cell.getTemperature()*cell.getTemperature()));
+                }
+
                 cell.setTemperature(newTemp);
-                view.updateCell(""+cell.getX()+cell.getY(), newTemp);
+
+                if (!(cell instanceof HeatSourceCell)) {
+                    view.updateCell(""+cell.getX()+cell.getY(), newTemp);
+                }
+
                 avgTemp += newTemp;
 
-            } else if (cell instanceof HeatSourceCell) {
-                cost += (int) (timer * (cell.getTemperature()*cell.getTemperature()));
             }
         }
 
