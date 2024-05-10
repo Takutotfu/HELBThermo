@@ -17,11 +17,14 @@
       <change afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/run.sh" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/java/com/example/helbthermo/Cell.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/helbthermo/CellFactory.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/java/com/example/helbthermo/CellView.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/java/com/example/helbthermo/ConfirmModificationView.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/java/com/example/helbthermo/DeadCell.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/java/com/example/helbthermo/HeatSourceCell.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/java/com/example/helbthermo/Main.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/helbthermo/Observable.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/helbthermo/Observer.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/java/com/example/helbthermo/Thermo.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/java/com/example/helbthermo/ThermoController.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/java/com/example/helbthermo/ThermoView.java" afterDir="false" />
@@ -39,6 +42,7 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="Interface" />
         <option value="Class" />
       </list>
     </option>
@@ -83,6 +87,9 @@
   }
 }</component>
   <component name="RecentsManager">
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="com.example.helbthermo" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\lenny\Documents\HELBThermo\src\main\resources\com\example\helbthermo" />
     </key>
@@ -111,6 +118,7 @@
       <workItem from="1715252293040" duration="21842000" />
       <workItem from="1715350240846" duration="1219000" />
       <workItem from="1715353158570" duration="3231000" />
+      <workItem from="1715364945211" duration="8241000" />
     </task>
     <servers />
   </component>

@@ -82,6 +82,13 @@ public class ThermoView {
                     button.setPrefSize(Cell.SIZE, Cell.SIZE);
                     buttonCellMap.put("" + i + j, button);
                     centerGrid.add(button, j, i);
+                    if ((i == 0 && j == 0)
+                            || (i == 0 && j == ThermoController.COLUMN_CELL - 1)
+                            || (i == ThermoController.ROW_CELL - 1 && j == 0)
+                            || (i == ThermoController.ROW_CELL - 1 && j == ThermoController.COLUMN_CELL - 1)) {
+                        setupHeatSourceCell("" + i + j, Thermo.TEMP_EXT);
+                        addHeatCellInBox("" + i + j, Thermo.TEMP_EXT);
+                    }
                 }
             }
 
@@ -209,11 +216,11 @@ public class ThermoView {
         cell.setStyle("-fx-background-color: #4c4c4c; ");
     }
 
-    public void setupDeadCell(DeadCell deadCell) {
-        String key = "" + deadCell.getX() + deadCell.getY();
-        Button cell = buttonCellMap.get(key);
-        cell.setText("");
-        cell.setStyle("-fx-background-color: #000000; ");
+    public void setupDeadCell(Cell cell) {
+        String key = "" + cell.getX() + cell.getY();
+        Button cellButton = buttonCellMap.get(key);
+        cellButton.setText("");
+        cellButton.setStyle("-fx-background-color: #000000; ");
     }
 
     public void resetCell(String key) {

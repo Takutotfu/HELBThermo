@@ -15,19 +15,16 @@ public class ThermoController {
     private final int timerDuration = 1;
 
     private final ThermoView view;
+    private final CellFactory cellFactory;
 
-    // TODO: cells into factory
-    private final HashMap<String, Cell> cells;
     private boolean isSimulationStarted = false;
 
     private Timeline timeline;
 
-    private int timer = 0;
-
-    public ThermoController(ThermoView view) {
+    public ThermoController(ThermoView view) throws Exception {
         this.view = view;
-        this.cells = new HashMap<>();
         this.timeline = new Timeline();
+        this.cellFactory = new CellFactory(view);
 
         view.initView();
         initialization();
@@ -35,23 +32,8 @@ public class ThermoController {
         setLeftButtonsActions();
     }
 
-    private void initialization() {
-        for (int i = 0; i < ThermoController.ROW_CELL; i++) {
-            for (int j = 0; j < ThermoController.COLUMN_CELL; j++) {
-                if ((i == 0 && j == 0)
-                        || (i == 0 && j == ThermoController.COLUMN_CELL - 1)
-                        || (i == ThermoController.ROW_CELL - 1 && j == 0)
-                        || (i == ThermoController.ROW_CELL - 1 && j == ThermoController.COLUMN_CELL - 1)) {
-                    String key = "" + i + j;
-                    cells.put(key, new HeatSourceCell(i, j, 0.0));
-                    view.setupHeatSourceCell(key, 0.0);
-                    view.addHeatCellInBox(key, 0.0);
-                    setHeatCellActions(key);
-                } else {
-                    cells.put("" + i + j, new Cell(i, j));
-                }
-            }
-        }
+    private void initialization() throws Exception {
+        cellFactory.createCells();
     }
 
     private void setLeftButtonsActions() {
@@ -74,39 +56,54 @@ public class ThermoController {
         view.getResetButton().setOnAction(event -> {
             timeline.stop();
             Thermo.resetSimulation(view);
-            cells.clear();
-            initialization();
-            isSimulationStarted = false;
+
+            try {
+                cellFactory.resetCells();
+                isSimulationStarted = false;
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+
         });
     }
 
     private void startSimulation() {
         timeline = new Timeline(new KeyFrame(Duration.seconds(timerDuration), actionEvent -> {
-            Thermo.simulation(view, cells);
+            Thermo.simulation(view, cellFactory.getCellsMap());
         }));
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
     }
 
     private void setCellButtonsActions() {
-        for (Cell cell : cells.values()) {
+        for (Cell cell : cellFactory.getCellsMap().values()) {
             String key = "" + cell.getX() + cell.getY();
+
             view.getCellButton(key).setOnAction(e -> {
+
                 timeline.pause();
                 Cell newCell = CellView.display(cell);
+
                 if (newCell instanceof HeatSourceCell) {
-                    HeatSourceCell heatSourceCell = (HeatSourceCell) newCell;
-                    changeCellToHeatSourceCell(heatSourceCell);
-                    view.setupHeatSourceCell(key, newCell.getTemperature());
-                    view.addHeatCellInBox(key, newCell.getTemperature());
-                    setHeatCellActions(key);
+                    try {
+                        cellFactory.changeCellType(newCell, "HeatSourceCell");
+                    } catch (Exception ex) {
+                        throw new RuntimeException(ex);
+                    }
                 } else if (newCell instanceof DeadCell) {
-                    DeadCell deadCell = (DeadCell) newCell;
-                    changeCellToDeadCell(deadCell);
-                    view.setupDeadCell(deadCell);
+                    try {
+                        cellFactory.changeCellType(newCell, "DeadCell");
+                    } catch (Exception ex) {
+                        throw new RuntimeException(ex);
+                    }
+                    view.setupDeadCell(newCell);
                 } else {
-                    view.resetCell(key);
-                    resetCell(newCell);
+                    try {
+                        view.resetCell(key);
+                        cellFactory.changeCellType(newCell, "Cell");
+                    } catch (Exception ex) {
+                        throw new RuntimeException(ex);
+                    }
                 }
                 setCellButtonsActions();
                 if (isSimulationStarted) {
@@ -118,7 +115,7 @@ public class ThermoController {
 
     private void setHeatCellActions(String key) {
         view.getHeatCellButton(key).setOnAction(e -> {
-            HeatSourceCell cell = (HeatSourceCell) cells.get(key);
+            HeatSourceCell cell = (HeatSourceCell) cellFactory.getCell(key);
             if (!cell.isActivated()) {
                 cell.setActivated(true);
                 view.unableHeatSourceCell(key, cell.getHeatTemperature());
@@ -127,28 +124,6 @@ public class ThermoController {
                 view.disableHeatSourceCell(key);
             }
         });
-    }
-
-    public void changeCellToHeatSourceCell(HeatSourceCell heatSourceCell) {
-        String key = "" + heatSourceCell.getX() + heatSourceCell.getY();
-        cells.remove(key);
-        cells.put(key, heatSourceCell);
-    }
-
-    public void changeCellToDeadCell(DeadCell deadCell) {
-        String key = "" + deadCell.getX() + deadCell.getY();
-        cells.remove(key);
-        cells.put(key, deadCell);
-    }
-
-    public void resetCell(Cell cell) {
-        String key = "" + cell.getX() + cell.getY();
-        cells.remove(key);
-        cells.put(key, cell);
-    }
-
-    public HashMap<String, Cell> getCells() {
-        return cells;
     }
 
 }
