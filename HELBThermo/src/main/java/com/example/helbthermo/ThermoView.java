@@ -16,7 +16,7 @@ import javafx.stage.Stage;
 import java.text.DecimalFormat;
 import java.util.HashMap;
 
-public class ThermoView {
+public class ThermoView implements Observer {
     private final int height = 720;
     private final int width = 1280;
     private final int spacing = 20;
@@ -280,4 +280,18 @@ public class ThermoView {
     public Button getCellButton(String cellId) {return buttonCellMap.get(cellId);}
 
     public Button getHeatCellButton(String cellId) {return buttonHeatCellMap.get(cellId);}
+
+    @Override
+    public void update(Object o) {
+        if (o instanceof HeatSourceCell) {
+            HeatSourceCell heatSourceCell = (HeatSourceCell) o;
+            setupHeatCell(heatSourceCell.getId(), heatSourceCell.getTemperature());
+        } else if (o instanceof DeadCell) {
+            DeadCell deadCell = (DeadCell) o;
+            setupDeadCell(deadCell.getId());
+        } else {
+            Cell cell = (Cell) o;
+            updateCell(cell.getId(), cell.getTemperature());
+        }
+    }
 }

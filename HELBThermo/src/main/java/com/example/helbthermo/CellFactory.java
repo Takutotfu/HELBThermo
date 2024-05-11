@@ -1,15 +1,11 @@
 package com.example.helbthermo;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
-public class CellFactory implements Observable {
+public class CellFactory {
     private final ThermoView view;
 
     private HashMap<String, Cell> cellsMap = new HashMap<>();
-
-    private List<Observer> observers = new ArrayList<>();
 
     public CellFactory(ThermoView view) {
         this.view = view;
@@ -22,7 +18,8 @@ public class CellFactory implements Observable {
                         || (i == 0 && j == ThermoController.COLUMN_CELL - 1)
                         || (i == ThermoController.ROW_CELL - 1 && j == 0)
                         || (i == ThermoController.ROW_CELL - 1 && j == ThermoController.COLUMN_CELL - 1)
-                        || (ThermoController.ROW_CELL % 2 != 0 && ThermoController.COLUMN_CELL % 2 != 0 && i == ThermoController.ROW_CELL/2 && j == ThermoController.COLUMN_CELL/2)) {
+                        || (ThermoController.ROW_CELL % 2 != 0 && ThermoController.COLUMN_CELL % 2 != 0
+                        && i == ThermoController.ROW_CELL / 2 && j == ThermoController.COLUMN_CELL / 2)) {
                     cellsMap.put("" + i + j, create("HeatSourceCell", i, j, Thermo.TEMP_EXT));
                 } else {
                     cellsMap.put("" + i + j, create("Cell", i, j, 0.0));
@@ -36,17 +33,23 @@ public class CellFactory implements Observable {
 
         switch (cellType) {
             case "Cell":
-                return new Cell(x, y);
+                Cell cell = new Cell(x, y);
+                cell.attach(view);
+
+                return cell;
             case "DeadCell":
                 DeadCell deadCell = new DeadCell(x, y);
+                deadCell.attach(view);
 
-                view.setupDeadCell(key);
+                deadCell.notifyObserver();
 
                 return deadCell;
             case "HeatSourceCell":
                 HeatSourceCell heatSourceCell = new HeatSourceCell(x, y, temperature);
+                heatSourceCell.attach(view);
 
-                view.setupHeatCell(key, temperature);
+
+                heatSourceCell.notifyObserver();
 
                 // setAction on HeatCellButton
                 view.getHeatCellButton(key).setOnAction(e -> {
@@ -96,22 +99,5 @@ public class CellFactory implements Observable {
 
     public Cell getCell(String key) {
         return cellsMap.get(key);
-    }
-
-    @Override
-    public void attach(Observer o) {
-        observers.add(o);
-    }
-
-    @Override
-    public void detach(Observer o) {
-        observers.remove(o);
-    }
-
-    @Override
-    public void notifyObserver() {
-        for (Observer o : observers) {
-            o.update(this);
-        }
     }
 }

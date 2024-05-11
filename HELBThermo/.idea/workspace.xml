@@ -57,6 +57,9 @@
       </MavenGeneralSettings>
     </option>
   </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 5
 }</component>
@@ -120,6 +123,7 @@
       <workItem from="1715353158570" duration="3231000" />
       <workItem from="1715364945211" duration="8553000" />
       <workItem from="1715428951560" duration="7412000" />
+      <workItem from="1715463089102" duration="4464000" />
     </task>
     <servers />
   </component>

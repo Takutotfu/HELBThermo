@@ -21,7 +21,7 @@ public class Thermo {
         cost = 0;
         avgTemp = 0;
 
-        double newTemp = 0;
+        double newTemp;
 
         timer++;
         timeBox.setText("Temps : " + timer + "sec");
@@ -137,7 +137,7 @@ public class Thermo {
                 cell.setTemperature(newTemp);
 
                 if (!(cell instanceof HeatSourceCell)) {
-                    view.updateCell(""+cell.getX()+cell.getY(), newTemp);
+                    cell.notifyObserver();
                 }
 
                 avgTemp += newTemp;
