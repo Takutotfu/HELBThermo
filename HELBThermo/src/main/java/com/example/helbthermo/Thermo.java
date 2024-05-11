@@ -152,20 +152,10 @@ public class Thermo {
 
     }
 
-    public static void resetSimulation(ThermoView view) {
-        Button timeBox = view.getTimeBox();
-        Button priceBox = view.getPriceBox();
-        Button avgTempBox = view.getAvgTempBox();
-
+    public static void resetSimulation() {
         timer = 0;
         cost = 0;
         avgTemp = 0.0;
-
-        timeBox.setText("Temps : " + timer + "sec");
-        avgTempBox.setText("T° moy. : " + avgTemp + "°C");
-        priceBox.setText("€ : " + cost + "€");
-
-        view.resetView();
     }
 
 }

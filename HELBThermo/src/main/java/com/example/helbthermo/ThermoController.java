@@ -5,12 +5,10 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.util.Duration;
 
-import java.util.HashMap;
-
 public class ThermoController {
 
-    public static final int COLUMN_CELL = 5;
-    public static final int ROW_CELL = 4;
+    public static final int COLUMN_CELL = 12;
+    public static final int ROW_CELL = 10;
 
     private final int timerDuration = 1;
 
@@ -27,13 +25,9 @@ public class ThermoController {
         this.cellFactory = new CellFactory(view);
 
         view.initView();
-        initialization();
+        cellFactory.createCells();
         setCellButtonsActions();
         setLeftButtonsActions();
-    }
-
-    private void initialization() throws Exception {
-        cellFactory.createCells();
     }
 
     private void setLeftButtonsActions() {
@@ -55,7 +49,8 @@ public class ThermoController {
 
         view.getResetButton().setOnAction(event -> {
             timeline.stop();
-            Thermo.resetSimulation(view);
+            Thermo.resetSimulation();
+            view.resetView();
 
             try {
                 cellFactory.resetCells();
@@ -77,9 +72,7 @@ public class ThermoController {
 
     private void setCellButtonsActions() {
         for (Cell cell : cellFactory.getCellsMap().values()) {
-            String key = "" + cell.getX() + cell.getY();
-
-            view.getCellButton(key).setOnAction(e -> {
+            view.getCellButton(cell.getId()).setOnAction(e -> {
 
                 timeline.pause();
                 Cell newCell = CellView.display(cell);
@@ -96,10 +89,8 @@ public class ThermoController {
                     } catch (Exception ex) {
                         throw new RuntimeException(ex);
                     }
-                    view.setupDeadCell(newCell);
                 } else {
                     try {
-                        view.resetCell(key);
                         cellFactory.changeCellType(newCell, "Cell");
                     } catch (Exception ex) {
                         throw new RuntimeException(ex);
@@ -111,19 +102,6 @@ public class ThermoController {
                 }
             });
         }
-    }
-
-    private void setHeatCellActions(String key) {
-        view.getHeatCellButton(key).setOnAction(e -> {
-            HeatSourceCell cell = (HeatSourceCell) cellFactory.getCell(key);
-            if (!cell.isActivated()) {
-                cell.setActivated(true);
-                view.unableHeatSourceCell(key, cell.getHeatTemperature());
-            } else {
-                cell.setActivated(false);
-                view.disableHeatSourceCell(key);
-            }
-        });
     }
 
 }

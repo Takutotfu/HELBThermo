@@ -32,10 +32,13 @@ public class ThermoView {
     private Button playButton, pauseButton, resetButton;
     private Button timeBox, priceBox, extTempBox, avgTempBox;
 
+    private int heatSourceNbr;
+
     public ThermoView(Stage stage) {
         this.stage = stage;
         this.buttonCellMap = new HashMap<>();
         this.buttonHeatCellMap = new HashMap<>();
+        this.heatSourceNbr = 0;
     }
 
     public void initView() {
@@ -78,16 +81,18 @@ public class ThermoView {
 
             for (int i = 0; i < ThermoController.ROW_CELL; i++) {
                 for (int j = 0; j < ThermoController.COLUMN_CELL; j++) {
+
                     Button button = new Button();
                     button.setPrefSize(Cell.SIZE, Cell.SIZE);
                     buttonCellMap.put("" + i + j, button);
                     centerGrid.add(button, j, i);
+
+                    // Corner heat source
                     if ((i == 0 && j == 0)
                             || (i == 0 && j == ThermoController.COLUMN_CELL - 1)
                             || (i == ThermoController.ROW_CELL - 1 && j == 0)
                             || (i == ThermoController.ROW_CELL - 1 && j == ThermoController.COLUMN_CELL - 1)) {
-                        setupHeatSourceCell("" + i + j, Thermo.TEMP_EXT);
-                        addHeatCellInBox("" + i + j, Thermo.TEMP_EXT);
+                        setupHeatCell("" + i + j, Thermo.TEMP_EXT);
                     }
                 }
             }
@@ -133,9 +138,9 @@ public class ThermoView {
         scrollPane.setPrefHeight(spacing * 30);
         scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
 
-        heatCellsBox = new VBox(); // Utiliser une VBox pour aligner verticalement les boutons
-        heatCellsBox.setAlignment(Pos.CENTER); // Centrer le contenu
-        heatCellsBox.setSpacing(spacing); // Espacement vertical entre les boutons
+        heatCellsBox = new VBox();
+        heatCellsBox.setAlignment(Pos.CENTER);
+        heatCellsBox.setSpacing(spacing);
 
         scrollPane.setContent(heatCellsBox);
 
@@ -177,27 +182,24 @@ public class ThermoView {
         root.setTop(topBox);
     }
 
-    public void addHeatCellInBox(String cellId, double temp) {
-        if (!buttonHeatCellMap.containsKey(cellId)) {
-            Button cell = new Button(getCellButton(cellId).getText());
-            cell.setStyle("-fx-background-color: " + toRGBCode(getColorFromIntensity(temp)));
-            cell.setAlignment(Pos.CENTER);
-            cell.setPrefSize(Cell.SIZE * 1.5, Cell.SIZE * 1.5);
+    public void setupHeatCell(String cellId, double temp) {
+        Button buttonCell = buttonCellMap.get(cellId);
 
-            buttonHeatCellMap.put(cellId, cell);
-            heatCellsBox.getChildren().add(cell);
+        buttonCell.setText("s" + new DecimalFormat("#.##").format(temp));
+        buttonCell.setStyle("-fx-background-color: " + toRGBCode(getColorFromIntensity(temp)));
+
+        if (!buttonHeatCellMap.containsKey(cellId)) {
+            Button heatCellButton = new Button(getCellButton(cellId).getText());
+            heatCellButton.setStyle("-fx-background-color: " + toRGBCode(getColorFromIntensity(temp)));
+            heatCellButton.setAlignment(Pos.CENTER);
+            heatCellButton.setPrefSize(Cell.SIZE * 1.5, Cell.SIZE * 1.5);
+
+            buttonHeatCellMap.put(cellId, heatCellButton);
+            heatCellsBox.getChildren().add(heatCellButton);
         } else {
             buttonHeatCellMap.get(cellId).setText(getCellButton(cellId).getText());
             buttonHeatCellMap.get(cellId).setStyle("-fx-background-color: " + toRGBCode(getColorFromIntensity(temp)));
         }
-    }
-
-    public void setupHeatSourceCell(String cellId, double temp) {
-        Button cell = buttonCellMap.get(cellId);
-
-        cell.setText("s" + new DecimalFormat("#.##").format(temp));
-
-        cell.setStyle("-fx-background-color: " + toRGBCode(getColorFromIntensity(temp)));
     }
 
     public void unableHeatSourceCell(String cellId, double temp) {
@@ -216,8 +218,7 @@ public class ThermoView {
         cell.setStyle("-fx-background-color: #4c4c4c; ");
     }
 
-    public void setupDeadCell(Cell cell) {
-        String key = "" + cell.getX() + cell.getY();
+    public void setupDeadCell(String key) {
         Button cellButton = buttonCellMap.get(key);
         cellButton.setText("");
         cellButton.setStyle("-fx-background-color: #000000; ");
@@ -237,6 +238,10 @@ public class ThermoView {
         for (String key : buttonCellMap.keySet()) {
             resetCell(key);
         }
+
+        timeBox.setText("Temps : 0sec");
+        avgTempBox.setText("T° moy. : 0°C");
+        priceBox.setText("€ : 0€");
     }
 
     public void updateCell(String cellId, double temp) {
@@ -258,39 +263,21 @@ public class ThermoView {
         return String.format("#%02X%02X%02X", r, g, b);
     }
 
-    public Button getPlayButton() {
-        return playButton;
-    }
+    public Button getPlayButton() {return playButton;}
 
-    public Button getPauseButton() {
-        return pauseButton;
-    }
+    public Button getPauseButton() {return pauseButton;}
 
-    public Button getResetButton() {
-        return resetButton;
-    }
+    public Button getResetButton() {return resetButton;}
 
-    public Button getAvgTempBox() {
-        return avgTempBox;
-    }
+    public Button getAvgTempBox() {return avgTempBox;}
 
-    public Button getExtTempBox() {
-        return extTempBox;
-    }
+    public Button getExtTempBox() {return extTempBox;}
 
-    public Button getPriceBox() {
-        return priceBox;
-    }
+    public Button getPriceBox() {return priceBox;}
 
-    public Button getTimeBox() {
-        return timeBox;
-    }
+    public Button getTimeBox() {return timeBox;}
 
-    public Button getCellButton(String cellId) {
-        return buttonCellMap.get(cellId);
-    }
+    public Button getCellButton(String cellId) {return buttonCellMap.get(cellId);}
 
-    public Button getHeatCellButton(String cellId) {
-        return buttonHeatCellMap.get(cellId);
-    }
+    public Button getHeatCellButton(String cellId) {return buttonHeatCellMap.get(cellId);}
 }

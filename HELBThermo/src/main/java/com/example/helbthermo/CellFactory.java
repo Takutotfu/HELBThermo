@@ -1,12 +1,15 @@
 package com.example.helbthermo;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
-public class CellFactory {
+public class CellFactory implements Observable {
     private final ThermoView view;
 
     private HashMap<String, Cell> cellsMap = new HashMap<>();
 
+    private List<Observer> observers = new ArrayList<>();
 
     public CellFactory(ThermoView view) {
         this.view = view;
@@ -18,7 +21,8 @@ public class CellFactory {
                 if ((i == 0 && j == 0)
                         || (i == 0 && j == ThermoController.COLUMN_CELL - 1)
                         || (i == ThermoController.ROW_CELL - 1 && j == 0)
-                        || (i == ThermoController.ROW_CELL - 1 && j == ThermoController.COLUMN_CELL - 1)) {
+                        || (i == ThermoController.ROW_CELL - 1 && j == ThermoController.COLUMN_CELL - 1)
+                        || (ThermoController.ROW_CELL % 2 != 0 && ThermoController.COLUMN_CELL % 2 != 0 && i == ThermoController.ROW_CELL/2 && j == ThermoController.COLUMN_CELL/2)) {
                     cellsMap.put("" + i + j, create("HeatSourceCell", i, j, Thermo.TEMP_EXT));
                 } else {
                     cellsMap.put("" + i + j, create("Cell", i, j, 0.0));
@@ -28,18 +32,23 @@ public class CellFactory {
     }
 
     public Cell create(String cellType, int x, int y, double temperature) throws Exception {
+        String key = "" + x + y;
+
         switch (cellType) {
             case "Cell":
                 return new Cell(x, y);
             case "DeadCell":
-                return new DeadCell(x, y);
+                DeadCell deadCell = new DeadCell(x, y);
+
+                view.setupDeadCell(key);
+
+                return deadCell;
             case "HeatSourceCell":
                 HeatSourceCell heatSourceCell = new HeatSourceCell(x, y, temperature);
-                String key = "" + x + y;
 
-                view.setupHeatSourceCell(key, temperature);
-                view.addHeatCellInBox(key, temperature);
+                view.setupHeatCell(key, temperature);
 
+                // setAction on HeatCellButton
                 view.getHeatCellButton(key).setOnAction(e -> {
                     if (!heatSourceCell.isActivated()) {
                         heatSourceCell.setActivated(true);
@@ -87,5 +96,22 @@ public class CellFactory {
 
     public Cell getCell(String key) {
         return cellsMap.get(key);
+    }
+
+    @Override
+    public void attach(Observer o) {
+        observers.add(o);
+    }
+
+    @Override
+    public void detach(Observer o) {
+        observers.remove(o);
+    }
+
+    @Override
+    public void notifyObserver() {
+        for (Observer o : observers) {
+            o.update(this);
+        }
     }
 }
