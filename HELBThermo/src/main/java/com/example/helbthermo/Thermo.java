@@ -1,7 +1,5 @@
 package com.example.helbthermo;
 
-import javafx.scene.control.Button;
-
 import java.text.DecimalFormat;
 import java.util.HashMap;
 
@@ -13,20 +11,13 @@ public class Thermo {
     private static double avgTemp = 0;
 
     public static void simulation(ThermoView view, HashMap<String, Cell> cells) {
-        Button timeBox = view.getTimeBox();
-        Button priceBox = view.getPriceBox();
-        Button extTempBox = view.getExtTempBox();
-        Button avgTempBox = view.getAvgTempBox();
-
         cost = 0;
         avgTemp = 0;
 
         double newTemp;
 
         timer++;
-        timeBox.setText("Temps : " + timer + "sec");
-
-        extTempBox.setText("T° ext. : " + TEMP_EXT + "°C");
+        view.setTimeBox("Temps : " + timer + "sec");
 
         for (Cell cell : cells.values()) {
             if (!(cell instanceof DeadCell)) {
@@ -83,7 +74,6 @@ public class Thermo {
                             + cells.get(bottomCellKey).getTemperature()
                             + cells.get(bottomRightCellKey).getTemperature()
                             + (TEMP_EXT * (ThermoController.ROW_CELL - 2))) / 9;
-
                 } else if (x == 0 && y == 0) { // Haut gauche
 
                     newTemp = (newTemp
@@ -141,15 +131,13 @@ public class Thermo {
                 }
 
                 avgTemp += newTemp;
-
             }
         }
 
-        priceBox.setText("€ : " + cost + "€");
+        view.setPriceBox("€ : " + cost + "€");
 
         avgTemp = avgTemp / (ThermoController.COLUMN_CELL * ThermoController.ROW_CELL);
-        avgTempBox.setText("T° moy. : " + new DecimalFormat("#.##").format(avgTemp) + "°C");
-
+        view.setAvgTempBox("T° moy. : " + new DecimalFormat("#.##").format(avgTemp) + "°C");
     }
 
     public static void resetSimulation() {

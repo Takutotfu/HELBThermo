@@ -20,7 +20,7 @@ public class CellFactory {
                         || (i == ThermoController.ROW_CELL - 1 && j == ThermoController.COLUMN_CELL - 1)
                         || (ThermoController.ROW_CELL % 2 != 0 && ThermoController.COLUMN_CELL % 2 != 0
                         && i == ThermoController.ROW_CELL / 2 && j == ThermoController.COLUMN_CELL / 2)) {
-                    cellsMap.put("" + i + j, create("HeatSourceCell", i, j, Thermo.TEMP_EXT));
+                    cellsMap.put("" + i + j, create("HeatSourceCell", i, j, ThermoController.ORIGINAL_HEAT_SOURCE_TEMPERATURE));
                 } else {
                     cellsMap.put("" + i + j, create("Cell", i, j, 0.0));
                 }
@@ -36,6 +36,8 @@ public class CellFactory {
                 Cell cell = new Cell(x, y);
                 cell.attach(view);
 
+                cell.notifyObserver();
+
                 return cell;
             case "DeadCell":
                 DeadCell deadCell = new DeadCell(x, y);
@@ -47,7 +49,6 @@ public class CellFactory {
             case "HeatSourceCell":
                 HeatSourceCell heatSourceCell = new HeatSourceCell(x, y, temperature);
                 heatSourceCell.attach(view);
-
 
                 heatSourceCell.notifyObserver();
 

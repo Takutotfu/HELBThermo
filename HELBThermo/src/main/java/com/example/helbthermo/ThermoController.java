@@ -7,8 +7,9 @@ import javafx.util.Duration;
 
 public class ThermoController {
 
-    public static final int COLUMN_CELL = 12;
-    public static final int ROW_CELL = 10;
+    public static final int COLUMN_CELL = 7;
+    public static final int ROW_CELL = 7;
+    public static final double ORIGINAL_HEAT_SOURCE_TEMPERATURE = 85.0;
 
     private final int timerDuration = 1;
 
@@ -64,6 +65,7 @@ public class ThermoController {
 
     private void startSimulation() {
         timeline = new Timeline(new KeyFrame(Duration.seconds(timerDuration), actionEvent -> {
+            view.setExtTempBox("T° ext. : " + Thermo.TEMP_EXT + "°C");
             Thermo.simulation(view, cellFactory.getCellsMap());
         }));
         timeline.setCycleCount(Animation.INDEFINITE);

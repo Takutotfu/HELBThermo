@@ -32,13 +32,10 @@ public class ThermoView implements Observer {
     private Button playButton, pauseButton, resetButton;
     private Button timeBox, priceBox, extTempBox, avgTempBox;
 
-    private int heatSourceNbr;
-
     public ThermoView(Stage stage) {
         this.stage = stage;
         this.buttonCellMap = new HashMap<>();
         this.buttonHeatCellMap = new HashMap<>();
-        this.heatSourceNbr = 0;
     }
 
     public void initView() {
@@ -81,19 +78,10 @@ public class ThermoView implements Observer {
 
             for (int i = 0; i < ThermoController.ROW_CELL; i++) {
                 for (int j = 0; j < ThermoController.COLUMN_CELL; j++) {
-
                     Button button = new Button();
                     button.setPrefSize(Cell.SIZE, Cell.SIZE);
                     buttonCellMap.put("" + i + j, button);
                     centerGrid.add(button, j, i);
-
-                    // Corner heat source
-                    if ((i == 0 && j == 0)
-                            || (i == 0 && j == ThermoController.COLUMN_CELL - 1)
-                            || (i == ThermoController.ROW_CELL - 1 && j == 0)
-                            || (i == ThermoController.ROW_CELL - 1 && j == ThermoController.COLUMN_CELL - 1)) {
-                        setupHeatCell("" + i + j, Thermo.TEMP_EXT);
-                    }
                 }
             }
 
@@ -185,7 +173,7 @@ public class ThermoView implements Observer {
     public void setupHeatCell(String cellId, double temp) {
         Button buttonCell = buttonCellMap.get(cellId);
 
-        buttonCell.setText("s" + new DecimalFormat("#.##").format(temp));
+        buttonCell.setText("s" + (buttonHeatCellMap.size()+1) + " : " + new DecimalFormat("#.##").format(temp));
         buttonCell.setStyle("-fx-background-color: " + toRGBCode(getColorFromIntensity(temp)));
 
         if (!buttonHeatCellMap.containsKey(cellId)) {
@@ -200,6 +188,10 @@ public class ThermoView implements Observer {
             buttonHeatCellMap.get(cellId).setText(getCellButton(cellId).getText());
             buttonHeatCellMap.get(cellId).setStyle("-fx-background-color: " + toRGBCode(getColorFromIntensity(temp)));
         }
+    }
+
+    public void deleteHeatCellButton(String cellId) {
+        heatCellsBox.getChildren().remove(buttonHeatCellMap.get(cellId));
     }
 
     public void unableHeatSourceCell(String cellId, double temp) {
@@ -263,24 +255,6 @@ public class ThermoView implements Observer {
         return String.format("#%02X%02X%02X", r, g, b);
     }
 
-    public Button getPlayButton() {return playButton;}
-
-    public Button getPauseButton() {return pauseButton;}
-
-    public Button getResetButton() {return resetButton;}
-
-    public Button getAvgTempBox() {return avgTempBox;}
-
-    public Button getExtTempBox() {return extTempBox;}
-
-    public Button getPriceBox() {return priceBox;}
-
-    public Button getTimeBox() {return timeBox;}
-
-    public Button getCellButton(String cellId) {return buttonCellMap.get(cellId);}
-
-    public Button getHeatCellButton(String cellId) {return buttonHeatCellMap.get(cellId);}
-
     @Override
     public void update(Object o) {
         if (o instanceof HeatSourceCell) {
@@ -288,10 +262,31 @@ public class ThermoView implements Observer {
             setupHeatCell(heatSourceCell.getId(), heatSourceCell.getTemperature());
         } else if (o instanceof DeadCell) {
             DeadCell deadCell = (DeadCell) o;
+            if (buttonHeatCellMap.containsKey(deadCell.getId())) {
+                heatCellsBox.getChildren().remove(buttonHeatCellMap.get(deadCell.getId()));
+                buttonHeatCellMap.remove(deadCell.getId());
+            }
             setupDeadCell(deadCell.getId());
         } else {
             Cell cell = (Cell) o;
+            if (buttonHeatCellMap.containsKey(cell.getId())) {
+                heatCellsBox.getChildren().remove(buttonHeatCellMap.get(cell.getId()));
+                buttonHeatCellMap.remove(cell.getId());
+            }
             updateCell(cell.getId(), cell.getTemperature());
         }
     }
+
+    // setter
+    public void setTimeBox(String text) {timeBox.setText(text);}
+    public void setPriceBox(String text) {priceBox.setText(text);}
+    public void setExtTempBox(String text) {extTempBox.setText(text);}
+    public void setAvgTempBox(String text) {avgTempBox.setText(text);}
+
+    // getter
+    public Button getPlayButton() {return playButton;}
+    public Button getPauseButton() {return pauseButton;}
+    public Button getResetButton() {return resetButton;}
+    public Button getCellButton(String cellId) {return buttonCellMap.get(cellId);}
+    public Button getHeatCellButton(String cellId) {return buttonHeatCellMap.get(cellId);}
 }
