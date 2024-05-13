@@ -120,6 +120,8 @@ public class Thermo {
 
                     if (heatSourceCell.isActivated()) {
                         newTemp = heatSourceCell.getHeatTemperature();
+                    } else {
+                        heatSourceCell.notifyObserver();
                     }
 
                     cost += (int) (timer * (cell.getTemperature()*cell.getTemperature()));

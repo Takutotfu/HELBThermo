@@ -173,24 +173,61 @@ public class ThermoView implements Observer {
         root.setTop(topBox);
     }
 
-    public void createHeatCell(String cellId, double temp) {
-        System.out.println(buttonCellMap.get(cellId));
+    private void createHeatCell(String cellId, double temp) {
         Button cell = buttonCellMap.get(cellId);
-        cell.setText(""+temp);
+        cell.setText("s" + (buttonHeatCellMap.size() + 1) + " : " + temp);
         cell.setStyle("-fx-background-color: " + toRGBCode(getColorFromIntensity(temp)));
 
-        Button button = new Button(""+temp);
-        button.setStyle("-fx-background-color: " + toRGBCode(getColorFromIntensity(temp)));
-        button.setPrefSize(cellSize*1.5, cellSize*1.5);
-        heatCellsBox.getChildren().add(button);
+        if (!buttonHeatCellMap.containsKey(cellId)) {
+            Button button = new Button(buttonCellMap.get(cellId).getText());
+            button.setStyle(buttonCellMap.get(cellId).getStyle());
+            button.setPrefSize(cellSize*1.5, cellSize*1.5);
+            buttonHeatCellMap.put(cellId, button);
+            heatCellsBox.getChildren().add(button);
+        } else {
+            Button button = buttonHeatCellMap.get(cellId);
+            button.setText(buttonCellMap.get(cellId).getText());
+            button.setStyle(buttonCellMap.get(cellId).getStyle());
+        }
+
     }
 
-    public void unableHeatSourceCell(String cellId, double temp) {
+    private void reOrderHeatCell() {
+        if (!buttonHeatCellMap.isEmpty()) {
+            int cpt = 0;
+            for (String id : buttonHeatCellMap.keySet()) {
+                cpt++;
+                String text = buttonHeatCellMap.get(id).getText();
+                double temperature = Double.parseDouble(text.substring(text.indexOf(':')+1));
+
+                buttonHeatCellMap.get(id).setText("s" + cpt + " : " + temperature);
+                buttonCellMap.get(id).setText("s" + cpt + " : " + temperature);
+            }
+        }
+    }
+
+    private void updateHeatCell(String cellId, double temperature) {
+        Button cell = buttonCellMap.get(cellId);
+        String text = cell.getText().substring(0, cell.getText().indexOf(':')+1);
+        cell.setText(text + " " + new DecimalFormat("#.##").format(temperature));
+    }
+
+    private void removeHeatCell(String cellId) {
+        if (buttonHeatCellMap.containsKey(cellId)) {
+            heatCellsBox.getChildren().remove(buttonHeatCellMap.get(cellId));
+            buttonHeatCellMap.remove(cellId);
+            reOrderHeatCell();
+        }
+    }
+
+    public void enableHeatSourceCell(String cellId, double temp) {
         Button buttonHeatCell = buttonHeatCellMap.get(cellId);
         Button cell = buttonCellMap.get(cellId);
+        String text = cell.getText().substring(0, cell.getText().indexOf(':')+1);
 
         buttonHeatCell.setStyle("-fx-background-color: " + toRGBCode(getColorFromIntensity(temp)));
         cell.setStyle("-fx-background-color: " + toRGBCode(getColorFromIntensity(temp)));
+        cell.setText(text + " " + new DecimalFormat("#.##").format(temp));
     }
 
     public void disableHeatSourceCell(String cellId) {
@@ -201,7 +238,7 @@ public class ThermoView implements Observer {
         cell.setStyle("-fx-background-color: #4c4c4c; ");
     }
 
-    public void setupDeadCell(String key) {
+    private void createDeadCell(String key) {
         Button cellButton = buttonCellMap.get(key);
         cellButton.setText("");
         cellButton.setStyle("-fx-background-color: #000000; ");
@@ -212,7 +249,7 @@ public class ThermoView implements Observer {
         priceBox.setText("€ : 0€");
     }
 
-    public void updateCell(String cellId, double temp) {
+    private void updateCell(String cellId, double temp) {
         Button cell = buttonCellMap.get(cellId);
         cell.setText(new DecimalFormat("#.##").format(temp));
         cell.setStyle("-fx-background-color: " + toRGBCode(getColorFromIntensity(temp)));
@@ -235,20 +272,19 @@ public class ThermoView implements Observer {
     public void update(Object o) {
         if (o instanceof HeatSourceCell) {
             HeatSourceCell heatSourceCell = (HeatSourceCell) o;
-            createHeatCell(heatSourceCell.getId(), heatSourceCell.getTemperature());
+            if (!heatSourceCell.isActivated()) {
+                updateHeatCell(heatSourceCell.getId(), heatSourceCell.getTemperature());
+            } else {
+                createHeatCell(heatSourceCell.getId(), heatSourceCell.getTemperature());
+                reOrderHeatCell();
+            }
         } else if (o instanceof DeadCell) {
             DeadCell deadCell = (DeadCell) o;
-            if (buttonHeatCellMap.containsKey(deadCell.getId())) {
-                heatCellsBox.getChildren().remove(buttonHeatCellMap.get(deadCell.getId()));
-                buttonHeatCellMap.remove(deadCell.getId());
-            }
-            setupDeadCell(deadCell.getId());
+            removeHeatCell(deadCell.getId());
+            createDeadCell(deadCell.getId());
         } else {
             Cell cell = (Cell) o;
-            if (buttonHeatCellMap.containsKey(cell.getId())) {
-                heatCellsBox.getChildren().remove(buttonHeatCellMap.get(cell.getId()));
-                buttonHeatCellMap.remove(cell.getId());
-            }
+            removeHeatCell(cell.getId());
             updateCell(cell.getId(), cell.getTemperature());
         }
     }

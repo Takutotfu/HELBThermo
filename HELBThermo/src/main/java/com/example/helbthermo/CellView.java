@@ -22,9 +22,9 @@ public class CellView {
     private static boolean isDeadCellCheck = false;
     private static boolean isHeatSourceCheck = false;
     private static String temperatureCell;
-    private static String typeReturn;
+    private static String[] typeAndTemperatureReturn;
 
-    public static String display(Cell cell) {
+    public static String[] display(Cell cell) {
         if (cell instanceof DeadCell) {
             isDeadCellCheck = true;
             isHeatSourceCheck = false;
@@ -34,7 +34,7 @@ public class CellView {
             isDeadCellCheck = false;
         }
         temperatureCell = new DecimalFormat("#.##").format(cell.getTemperature());
-        typeReturn = cell.getClass().getName();
+        typeAndTemperatureReturn = new String[]{cell.getClass().getName(), String.valueOf(cell.getTemperature())};
 
         Stage window = new Stage();
         window.initModality(Modality.APPLICATION_MODAL); //focus sur la fenetre
@@ -91,18 +91,19 @@ public class CellView {
             isModificationCanceled = ConfirmModificationView.display();
             if (isModificationCanceled) {
                 if (heatSourceCheckBox.isSelected()) {
-                    if (!temperatureInput.getText().isEmpty())
-                        typeReturn = HeatSourceCell.class.getName();
-                    else {
+                    if (!temperatureInput.getText().isEmpty()) {
+                        typeAndTemperatureReturn[0] = HeatSourceCell.class.getName();
+                        typeAndTemperatureReturn[1] = temperatureInput.getText();
+                    } else {
                         Alert alert = new Alert(Alert.AlertType.ERROR);
                         alert.setTitle("Error");
                         alert.setHeaderText("temperature is not set");
                         alert.showAndWait();
                     }
                 } else if (!heatSourceCheckBox.isSelected() && deadCellCheckBox.isSelected()) {
-                    typeReturn = DeadCell.class.getName();
+                    typeAndTemperatureReturn[0] = DeadCell.class.getName();
                 } else if (!(deadCellCheckBox.isSelected() && heatSourceCheckBox.isSelected())) {
-                    typeReturn = Cell.class.getName();
+                    typeAndTemperatureReturn[0] = Cell.class.getName();
                 }
                 window.close();
             }
@@ -120,6 +121,6 @@ public class CellView {
         window.setScene(scene);
         window.showAndWait();
 
-        return typeReturn;
+        return typeAndTemperatureReturn;
     }
 }

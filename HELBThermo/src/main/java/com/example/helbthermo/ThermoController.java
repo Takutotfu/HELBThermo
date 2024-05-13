@@ -9,8 +9,8 @@ import java.util.HashMap;
 
 public class ThermoController {
 
-    public static final int COLUMN_CELL = 10;
-    public static final int ROW_CELL = 10;
+    public static final int COLUMN_CELL = 7;
+    public static final int ROW_CELL = 7;
     public static final double ORIGINAL_HEAT_SOURCE_TEMPERATURE = 85.0;
 
     private final int timerDuration = 1;
@@ -23,6 +23,9 @@ public class ThermoController {
     private HashMap<String, Cell> cellsMap;
 
     public ThermoController(ThermoView view) throws Exception {
+        this.timeline = new Timeline();
+        this.isSimulationStarted = false;
+
         this.view = view;
         view.initView();
 
@@ -31,9 +34,6 @@ public class ThermoController {
 
         setCellButtonsActions();
         setLeftButtonsActions();
-
-        this.timeline = new Timeline();
-        this.isSimulationStarted = false;
     }
 
     private void setLeftButtonsActions() {
@@ -69,10 +69,10 @@ public class ThermoController {
         for (Cell cell : cellsMap.values()) {
             view.getCellButton(cell.getId()).setOnAction(e -> {
                 timeline.pause();
-                String cellType = CellView.display(cell);
+                String[] cellType = CellView.display(cell);
 
                 try {
-                    cellsMap.replace(cell.getId(), cellFactory.create(cellType, cell.getX(), cell.getY(), cell.getTemperature()));
+                    cellsMap.replace(cell.getId(), cellFactory.create(cellType[0], cell.getX(), cell.getY(), Double.parseDouble(cellType[1])));
                 } catch (Exception ex) {
                     throw new RuntimeException(ex);
                 }

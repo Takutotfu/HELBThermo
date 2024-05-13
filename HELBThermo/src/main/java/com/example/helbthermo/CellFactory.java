@@ -5,13 +5,13 @@ import java.util.HashMap;
 public class CellFactory {
     private final ThermoView view;
 
-    private final HashMap<String, Cell> cellsMap = new HashMap<>();
-
     public CellFactory(ThermoView view) {
         this.view = view;
     }
 
     public HashMap<String, Cell> createCells() throws Exception {
+        HashMap<String, Cell> cellsMap = new HashMap<>();
+
         for (int i = 0; i < ThermoController.ROW_CELL; i++) {
             for (int j = 0; j < ThermoController.COLUMN_CELL; j++) {
                 if ((i == 0 && j == 0)
@@ -56,7 +56,7 @@ public class CellFactory {
             view.getHeatCellButton(key).setOnAction(e -> {
                 if (!heatSourceCell.isActivated()) {
                     heatSourceCell.setActivated(true);
-                    view.unableHeatSourceCell(key, heatSourceCell.getHeatTemperature());
+                    view.enableHeatSourceCell(key, heatSourceCell.getHeatTemperature());
                 } else {
                     heatSourceCell.setActivated(false);
                     view.disableHeatSourceCell(key);
