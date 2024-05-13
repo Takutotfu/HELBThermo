@@ -5,22 +5,25 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.util.Duration;
 
+import java.text.DecimalFormat;
 import java.util.HashMap;
 
 public class ThermoController {
 
     public static final int COLUMN_CELL = 7;
     public static final int ROW_CELL = 7;
+    public static final int TEMP_EXT = 3; //°C
     public static final double ORIGINAL_HEAT_SOURCE_TEMPERATURE = 85.0;
 
     private final int timerDuration = 1;
 
     private final ThermoView view;
     private final CellFactory cellFactory;
+    private final HashMap<String, Cell> cellsMap;
+
 
     private boolean isSimulationStarted;
     private Timeline timeline;
-    private HashMap<String, Cell> cellsMap;
 
     public ThermoController(ThermoView view) throws Exception {
         this.timeline = new Timeline();
@@ -48,18 +51,22 @@ public class ThermoController {
 
         view.getPauseButton().setOnAction(event -> {
             timeline.pause();
+            isSimulationStarted = false;
         });
 
         view.getResetButton().setOnAction(event -> {
-            Thermo.resetSimulation();
+            ThermoSystem.resetSimulation();
             view.resetView();
         });
     }
 
     private void startSimulation() {
         timeline = new Timeline(new KeyFrame(Duration.seconds(timerDuration), actionEvent -> {
-            view.setExtTempBox("T° ext. : " + Thermo.TEMP_EXT + "°C");
-            Thermo.simulation(view, cellsMap);
+            view.setExtTempBox("T° ext. : " + TEMP_EXT + "°C");
+            view.setTimeBox("Temps : " + ThermoSystem.timer + "sec");
+            ThermoSystem.simulation(cellsMap);
+            view.setPriceBox("€ : " + ThermoSystem.cost + "€");
+            view.setAvgTempBox("T° moy. : " + new DecimalFormat("#.##").format(ThermoSystem.avgTemp) + "°C");
         }));
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();

@@ -12,6 +12,7 @@ import javafx.stage.Stage;
 
 import java.text.DecimalFormat;
 
+// TODO : Comment code
 public class CellView {
     private static final int HEIGHT = 300;
     private static final int WIDTH = 230;
@@ -21,10 +22,12 @@ public class CellView {
 
     private static boolean isDeadCellCheck = false;
     private static boolean isHeatSourceCheck = false;
-    private static String temperatureCell;
     private static String[] typeAndTemperatureReturn;
 
     public static String[] display(Cell cell) {
+        String temperatureCell = new DecimalFormat("#.##").format(cell.getTemperature());
+        typeAndTemperatureReturn = new String[]{cell.getClass().getName(), temperatureCell};
+
         if (cell instanceof DeadCell) {
             isDeadCellCheck = true;
             isHeatSourceCheck = false;
@@ -33,8 +36,6 @@ public class CellView {
             isHeatSourceCheck = true;
             isDeadCellCheck = false;
         }
-        temperatureCell = new DecimalFormat("#.##").format(cell.getTemperature());
-        typeAndTemperatureReturn = new String[]{cell.getClass().getName(), String.valueOf(cell.getTemperature())};
 
         Stage window = new Stage();
         window.initModality(Modality.APPLICATION_MODAL); //focus sur la fenetre

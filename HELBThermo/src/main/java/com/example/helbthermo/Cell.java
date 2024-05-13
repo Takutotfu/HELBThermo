@@ -16,8 +16,8 @@ public class Cell implements Observable {
         this.id = ""+x+y;
         this.x = x;
         this.y = y;
-        this.temperature = Thermo.TEMP_EXT;
-        this.observers = new ArrayList<Observer>();
+        this.temperature = ThermoController.TEMP_EXT;
+        this.observers = new ArrayList<>();
     }
 
     public int getX() { return x; }

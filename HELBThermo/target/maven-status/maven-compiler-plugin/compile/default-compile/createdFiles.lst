@@ -1,6 +1,6 @@
-com/example/helbthermo/Thermo.class
 com/example/helbthermo/CellFactory.class
 com/example/helbthermo/ConfirmModificationView.class
+com/example/helbthermo/ThermoSystem.class
 com/example/helbthermo/HeatSourceCell.class
 com/example/helbthermo/ThermoController.class
 com/example/helbthermo/DeadCell.class

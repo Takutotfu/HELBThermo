@@ -2,7 +2,7 @@ package com.example.helbthermo;
 
 public class HeatSourceCell extends Cell {
 
-    private double heatTemperature;
+    private final double heatTemperature;
     private boolean isActivated = true;
 
     public HeatSourceCell(int x, int y, double heatTemperature) {
@@ -17,5 +17,4 @@ public class HeatSourceCell extends Cell {
 
     public double getHeatTemperature() {return heatTemperature;}
 
-    public void setHeatTemperature(double heatTemperature) {this.heatTemperature = heatTemperature;}
 }
