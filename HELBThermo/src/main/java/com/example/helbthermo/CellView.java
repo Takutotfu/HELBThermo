@@ -22,10 +22,9 @@ public class CellView {
     private static boolean isDeadCellCheck = false;
     private static boolean isHeatSourceCheck = false;
     private static String temperatureCell;
+    private static String typeReturn;
 
-    private static Cell newCell;
-
-    public static Cell display(Cell cell) {
+    public static String display(Cell cell) {
         if (cell instanceof DeadCell) {
             isDeadCellCheck = true;
             isHeatSourceCheck = false;
@@ -35,7 +34,7 @@ public class CellView {
             isDeadCellCheck = false;
         }
         temperatureCell = new DecimalFormat("#.##").format(cell.getTemperature());
-        newCell = cell;
+        typeReturn = cell.getClass().getName();
 
         Stage window = new Stage();
         window.initModality(Modality.APPLICATION_MODAL); //focus sur la fenetre
@@ -93,7 +92,7 @@ public class CellView {
             if (isModificationCanceled) {
                 if (heatSourceCheckBox.isSelected()) {
                     if (!temperatureInput.getText().isEmpty())
-                        newCell = new HeatSourceCell(cell.getX(), cell.getY(), Integer.parseInt(temperatureInput.getText()));
+                        typeReturn = HeatSourceCell.class.getName();
                     else {
                         Alert alert = new Alert(Alert.AlertType.ERROR);
                         alert.setTitle("Error");
@@ -101,11 +100,10 @@ public class CellView {
                         alert.showAndWait();
                     }
                 } else if (!heatSourceCheckBox.isSelected() && deadCellCheckBox.isSelected()) {
-                    newCell = new DeadCell(cell.getX(), cell.getY());
+                    typeReturn = DeadCell.class.getName();
                 } else if (!(deadCellCheckBox.isSelected() && heatSourceCheckBox.isSelected())) {
-                    newCell = new Cell(cell.getX(), cell.getY());
+                    typeReturn = Cell.class.getName();
                 }
-
                 window.close();
             }
         });
@@ -122,6 +120,6 @@ public class CellView {
         window.setScene(scene);
         window.showAndWait();
 
-        return newCell;
+        return typeReturn;
     }
 }

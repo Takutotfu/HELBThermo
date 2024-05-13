@@ -23,6 +23,9 @@ public class ThermoView implements Observer {
     private final int labelSize = 150;
     private final int maxGridpaneSize = 12;
     private final int minGridpaneSize = 3;
+    private final int rgbMaxValue = 255;
+
+    private final double cellSize = 100.0;
 
     private final HashMap<String, Button> buttonCellMap;
     private final HashMap<String, Button> buttonHeatCellMap;
@@ -79,7 +82,7 @@ public class ThermoView implements Observer {
             for (int i = 0; i < ThermoController.ROW_CELL; i++) {
                 for (int j = 0; j < ThermoController.COLUMN_CELL; j++) {
                     Button button = new Button();
-                    button.setPrefSize(Cell.SIZE, Cell.SIZE);
+                    button.setPrefSize(cellSize, cellSize);
                     buttonCellMap.put("" + i + j, button);
                     centerGrid.add(button, j, i);
                 }
@@ -170,28 +173,16 @@ public class ThermoView implements Observer {
         root.setTop(topBox);
     }
 
-    public void setupHeatCell(String cellId, double temp) {
-        Button buttonCell = buttonCellMap.get(cellId);
+    public void createHeatCell(String cellId, double temp) {
+        System.out.println(buttonCellMap.get(cellId));
+        Button cell = buttonCellMap.get(cellId);
+        cell.setText(""+temp);
+        cell.setStyle("-fx-background-color: " + toRGBCode(getColorFromIntensity(temp)));
 
-        buttonCell.setText("s" + (buttonHeatCellMap.size()+1) + " : " + new DecimalFormat("#.##").format(temp));
-        buttonCell.setStyle("-fx-background-color: " + toRGBCode(getColorFromIntensity(temp)));
-
-        if (!buttonHeatCellMap.containsKey(cellId)) {
-            Button heatCellButton = new Button(getCellButton(cellId).getText());
-            heatCellButton.setStyle("-fx-background-color: " + toRGBCode(getColorFromIntensity(temp)));
-            heatCellButton.setAlignment(Pos.CENTER);
-            heatCellButton.setPrefSize(Cell.SIZE * 1.5, Cell.SIZE * 1.5);
-
-            buttonHeatCellMap.put(cellId, heatCellButton);
-            heatCellsBox.getChildren().add(heatCellButton);
-        } else {
-            buttonHeatCellMap.get(cellId).setText(getCellButton(cellId).getText());
-            buttonHeatCellMap.get(cellId).setStyle("-fx-background-color: " + toRGBCode(getColorFromIntensity(temp)));
-        }
-    }
-
-    public void deleteHeatCellButton(String cellId) {
-        heatCellsBox.getChildren().remove(buttonHeatCellMap.get(cellId));
+        Button button = new Button(""+temp);
+        button.setStyle("-fx-background-color: " + toRGBCode(getColorFromIntensity(temp)));
+        button.setPrefSize(cellSize*1.5, cellSize*1.5);
+        heatCellsBox.getChildren().add(button);
     }
 
     public void unableHeatSourceCell(String cellId, double temp) {
@@ -216,23 +207,8 @@ public class ThermoView implements Observer {
         cellButton.setStyle("-fx-background-color: #000000; ");
     }
 
-    public void resetCell(String key) {
-        Button newCell = buttonCellMap.get(key);
-        newCell.setText("");
-        newCell.setStyle("");
-        if (buttonHeatCellMap.containsKey(key)) {
-            heatCellsBox.getChildren().remove(buttonHeatCellMap.get(key));
-            buttonHeatCellMap.remove(key);
-        }
-    }
-
     public void resetView() {
-        for (String key : buttonCellMap.keySet()) {
-            resetCell(key);
-        }
-
         timeBox.setText("Temps : 0sec");
-        avgTempBox.setText("T° moy. : 0°C");
         priceBox.setText("€ : 0€");
     }
 
@@ -244,14 +220,14 @@ public class ThermoView implements Observer {
 
     private Color getColorFromIntensity(double intensity) {
         intensity = intensity / 100.0;
-        double redIntensity = ((1 - intensity) * 255);
-        return Color.rgb(255, (int) redIntensity, (int) redIntensity);
+        double redIntensity = ((1 - intensity) * rgbMaxValue);
+        return Color.rgb(rgbMaxValue, (int) redIntensity, (int) redIntensity);
     }
 
     private String toRGBCode(Color color) {
-        int r = (int) (color.getRed() * 255);
-        int g = (int) (color.getGreen() * 255);
-        int b = (int) (color.getBlue() * 255);
+        int r = (int) (color.getRed() * rgbMaxValue);
+        int g = (int) (color.getGreen() * rgbMaxValue);
+        int b = (int) (color.getBlue() * rgbMaxValue);
         return String.format("#%02X%02X%02X", r, g, b);
     }
 
@@ -259,7 +235,7 @@ public class ThermoView implements Observer {
     public void update(Object o) {
         if (o instanceof HeatSourceCell) {
             HeatSourceCell heatSourceCell = (HeatSourceCell) o;
-            setupHeatCell(heatSourceCell.getId(), heatSourceCell.getTemperature());
+            createHeatCell(heatSourceCell.getId(), heatSourceCell.getTemperature());
         } else if (o instanceof DeadCell) {
             DeadCell deadCell = (DeadCell) o;
             if (buttonHeatCellMap.containsKey(deadCell.getId())) {

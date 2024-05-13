@@ -5,10 +5,12 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.util.Duration;
 
+import java.util.HashMap;
+
 public class ThermoController {
 
-    public static final int COLUMN_CELL = 7;
-    public static final int ROW_CELL = 7;
+    public static final int COLUMN_CELL = 10;
+    public static final int ROW_CELL = 10;
     public static final double ORIGINAL_HEAT_SOURCE_TEMPERATURE = 85.0;
 
     private final int timerDuration = 1;
@@ -16,19 +18,22 @@ public class ThermoController {
     private final ThermoView view;
     private final CellFactory cellFactory;
 
-    private boolean isSimulationStarted = false;
-
+    private boolean isSimulationStarted;
     private Timeline timeline;
+    private HashMap<String, Cell> cellsMap;
 
     public ThermoController(ThermoView view) throws Exception {
         this.view = view;
-        this.timeline = new Timeline();
-        this.cellFactory = new CellFactory(view);
-
         view.initView();
-        cellFactory.createCells();
+
+        this.cellFactory = new CellFactory(view);
+        this.cellsMap = cellFactory.createCells();
+
         setCellButtonsActions();
         setLeftButtonsActions();
+
+        this.timeline = new Timeline();
+        this.isSimulationStarted = false;
     }
 
     private void setLeftButtonsActions() {
@@ -42,63 +47,38 @@ public class ThermoController {
         });
 
         view.getPauseButton().setOnAction(event -> {
-            if (isSimulationStarted) {
-                timeline.pause();
-                isSimulationStarted = false;
-            }
+            timeline.pause();
         });
 
         view.getResetButton().setOnAction(event -> {
-            timeline.stop();
             Thermo.resetSimulation();
             view.resetView();
-
-            try {
-                cellFactory.resetCells();
-                isSimulationStarted = false;
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-
         });
     }
 
     private void startSimulation() {
         timeline = new Timeline(new KeyFrame(Duration.seconds(timerDuration), actionEvent -> {
             view.setExtTempBox("T° ext. : " + Thermo.TEMP_EXT + "°C");
-            Thermo.simulation(view, cellFactory.getCellsMap());
+            Thermo.simulation(view, cellsMap);
         }));
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
     }
 
     private void setCellButtonsActions() {
-        for (Cell cell : cellFactory.getCellsMap().values()) {
+        for (Cell cell : cellsMap.values()) {
             view.getCellButton(cell.getId()).setOnAction(e -> {
-
                 timeline.pause();
-                Cell newCell = CellView.display(cell);
+                String cellType = CellView.display(cell);
 
-                if (newCell instanceof HeatSourceCell) {
-                    try {
-                        cellFactory.changeCellType(newCell, "HeatSourceCell");
-                    } catch (Exception ex) {
-                        throw new RuntimeException(ex);
-                    }
-                } else if (newCell instanceof DeadCell) {
-                    try {
-                        cellFactory.changeCellType(newCell, "DeadCell");
-                    } catch (Exception ex) {
-                        throw new RuntimeException(ex);
-                    }
-                } else {
-                    try {
-                        cellFactory.changeCellType(newCell, "Cell");
-                    } catch (Exception ex) {
-                        throw new RuntimeException(ex);
-                    }
+                try {
+                    cellsMap.replace(cell.getId(), cellFactory.create(cellType, cell.getX(), cell.getY(), cell.getTemperature()));
+                } catch (Exception ex) {
+                    throw new RuntimeException(ex);
                 }
+
                 setCellButtonsActions();
+
                 if (isSimulationStarted) {
                     timeline.play();
                 }

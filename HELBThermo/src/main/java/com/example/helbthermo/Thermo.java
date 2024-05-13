@@ -3,6 +3,7 @@ package com.example.helbthermo;
 import java.text.DecimalFormat;
 import java.util.HashMap;
 
+// TODO : Optimize simulation (delete view, optimize function) mb add observer for information button
 public class Thermo {
     public static final int TEMP_EXT = 3; //°C
 
@@ -143,7 +144,6 @@ public class Thermo {
     public static void resetSimulation() {
         timer = 0;
         cost = 0;
-        avgTemp = 0.0;
     }
 
 }

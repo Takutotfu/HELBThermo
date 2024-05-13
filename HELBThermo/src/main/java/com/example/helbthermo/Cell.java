@@ -4,15 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Cell implements Observable {
-    public static final double SIZE = 100.0;
-
     private final String id;
     private final int x;
     private final int y;
 
     private double temperature;
 
-    private List<Observer> observers;
+    private final List<Observer> observers;
 
     public Cell(int x, int y) {
         this.id = ""+x+y;
