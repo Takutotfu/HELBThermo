@@ -33,6 +33,7 @@
       <change afterPath="$PROJECT_DIR$/src/main/resources/com/example/helbthermo/icons/play.png" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/resources/com/example/helbthermo/icons/reset.png" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/test.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Projet Java IV - HELBThermo 2324.pdf" beforeDir="false" afterPath="$PROJECT_DIR$/../Projet Java IV - HELBThermo 2324.pdf" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -130,6 +131,7 @@
       <workItem from="1715611700207" duration="9347000" />
       <workItem from="1715625976086" duration="216000" />
       <workItem from="1715633374695" duration="5465000" />
+      <workItem from="1715687000837" duration="2935000" />
     </task>
     <servers />
   </component>

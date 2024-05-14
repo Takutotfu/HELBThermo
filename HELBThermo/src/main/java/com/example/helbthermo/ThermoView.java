@@ -299,6 +299,9 @@ public class ThermoView implements Observer {
     public Button getPlayButton() {return playButton;}
     public Button getPauseButton() {return pauseButton;}
     public Button getResetButton() {return resetButton;}
+
+    public Stage getStage() {return stage;}
+
     public Button getCellButton(String cellId) {return buttonCellMap.get(cellId);}
     public Button getHeatCellButton(String cellId) {return buttonHeatCellMap.get(cellId);}
 }

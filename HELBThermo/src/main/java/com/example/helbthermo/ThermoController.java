@@ -5,6 +5,11 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.util.Duration;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.HashMap;
 
@@ -21,13 +26,14 @@ public class ThermoController {
     private final CellFactory cellFactory;
     private final HashMap<String, Cell> cellsMap;
 
-
     private boolean isSimulationStarted;
     private Timeline timeline;
+    private String textLog;
 
     public ThermoController(ThermoView view) throws Exception {
         this.timeline = new Timeline();
         this.isSimulationStarted = false;
+        this.textLog = "";
 
         this.view = view;
         view.initView();
@@ -37,6 +43,13 @@ public class ThermoController {
 
         setCellButtonsActions();
         setLeftButtonsActions();
+        setStageCloseEvent();
+    }
+
+    private void setStageCloseEvent() {
+        view.getStage().setOnCloseRequest(event -> {
+            createFile();
+        });
     }
 
     private void setLeftButtonsActions() {
@@ -64,9 +77,16 @@ public class ThermoController {
         timeline = new Timeline(new KeyFrame(Duration.seconds(timerDuration), actionEvent -> {
             view.setExtTempBox("T° ext. : " + TEMP_EXT + "°C");
             view.setTimeBox("Temps : " + ThermoSystem.timer + "sec");
+
             ThermoSystem.simulation(cellsMap);
+
             view.setPriceBox("€ : " + ThermoSystem.cost + "€");
             view.setAvgTempBox("T° moy. : " + new DecimalFormat("#.##").format(ThermoSystem.avgTemp) + "°C");
+
+            textLog += ThermoSystem.timer + ";"
+                    + ThermoSystem.cost + ";"
+                    + new DecimalFormat("#.##").format(ThermoSystem.avgTemp) + ";"
+                    + TEMP_EXT + "\n";
         }));
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
@@ -93,4 +113,36 @@ public class ThermoController {
         }
     }
 
+    // Code basé sur W3 School https://www.w3schools.com/java/java_files_create.asp
+    // ##############################################################################
+    private void createFile() {
+        // Date formater https://www.w3schools.com/java/java_date.asp
+        LocalDateTime myDateObj = LocalDateTime.now();
+        DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("ddMMyy_HHmmss");
+        String filename = myDateObj.format(myFormatObj) + ".log";
+
+        try {
+            File myObj = new File(filename);
+            if (myObj.createNewFile()) {
+                writeToFile(filename);
+            } else {
+                System.out.println("File already exists.");
+            }
+        } catch (IOException e) {
+            System.out.println("An error occurred with file creation.");
+            e.printStackTrace();
+        }
+    }
+
+    private void writeToFile(String filename) {
+        try {
+            FileWriter myWriter = new FileWriter(filename);
+            myWriter.write(textLog);
+            myWriter.close();
+        } catch (IOException e) {
+            System.out.println("An error occurred with file writing.");
+            e.printStackTrace();
+        }
+    }
+    // ##############################################################################
 }
