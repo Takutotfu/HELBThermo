@@ -40,6 +40,7 @@
       <change afterPath="$PROJECT_DIR$/logs/150524_013948.log" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/logs/150524_014103.log" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/logs/150524_014337.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/logs/150524_014519.log" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/mvnw" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/mvnw.cmd" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
@@ -165,7 +166,7 @@
       <workItem from="1715611700207" duration="9347000" />
       <workItem from="1715625976086" duration="216000" />
       <workItem from="1715633374695" duration="5465000" />
-      <workItem from="1715687000837" duration="24469000" />
+      <workItem from="1715687000837" duration="24838000" />
     </task>
     <servers />
   </component>

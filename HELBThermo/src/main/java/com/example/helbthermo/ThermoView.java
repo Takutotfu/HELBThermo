@@ -276,7 +276,7 @@ public class ThermoView implements Observer {
             } else {
                 updateHeatCell(heatSourceCell.getId(), heatSourceCell.getTemperature());
             }
-            
+
             if (!heatSourceCell.isActivated()) {
                 disableHeatSourceCell(heatSourceCell.getId());
             } else {

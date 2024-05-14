@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 public class ThermoSystemTarget extends ThermoSystemManual implements SimulationSystem {
 
+    private final double targetTemperature = 20.0;
     private double avgTemp;
 
     @Override
@@ -19,12 +20,10 @@ public class ThermoSystemTarget extends ThermoSystemManual implements Simulation
         for (Cell c : cells.values()) {
             if (c instanceof HeatSourceCell) {
                 HeatSourceCell heatSourceCell = (HeatSourceCell) c;
-                if (avgTemp < 20.0) {
+                if (avgTemp < targetTemperature) {
                     heatSourceCell.activate();
-                    System.out.println("Activated heat source");
                 } else {
                     heatSourceCell.deactivate();
-                    System.out.println("Deactivated heat source cell");
                 }
                 heatSourceCell.notifyObserver();
             }
