@@ -265,12 +265,11 @@ public class ThermoView implements Observer {
     public void update(Object o) {
         if (o instanceof HeatSourceCell) {
             HeatSourceCell heatSourceCell = (HeatSourceCell) o;
-            if (!heatSourceCell.isActivated()) {
-                updateHeatCell(heatSourceCell.getId(), heatSourceCell.getTemperature());
-            } else {
+            if (heatSourceCell.isActivated()) {
                 createHeatCell(heatSourceCell.getId(), heatSourceCell.getTemperature());
                 reOrderHeatCell();
             }
+            updateHeatCell(heatSourceCell.getId(), heatSourceCell.getTemperature());
         } else if (o instanceof DeadCell) {
             DeadCell deadCell = (DeadCell) o;
             removeHeatCell(deadCell.getId());

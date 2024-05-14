@@ -14,15 +14,22 @@ import java.text.DecimalFormat;
 
 // TODO : Comment code
 public class CellView {
+    public static final int TYPE_INDEX = 0;
+    public static final int TEMP_INDEX = 1;
+
     private static final int HEIGHT = 300;
     private static final int WIDTH = 230;
     private static final int SPACING = 20;
+    private static final double MAX_TEMP = 100.0;
+    private static final double MIN_TEMP = 0.0;
 
     private static boolean isModificationCanceled = false;
+    private static boolean answer = true;
 
     private static boolean isDeadCellCheck = false;
     private static boolean isHeatSourceCheck = false;
     private static String[] typeAndTemperatureReturn;
+
 
     public static String[] display(Cell cell) {
         String temperatureCell = new DecimalFormat("#.##").format(cell.getTemperature());
@@ -93,20 +100,44 @@ public class CellView {
             if (isModificationCanceled) {
                 if (heatSourceCheckBox.isSelected()) {
                     if (!temperatureInput.getText().isEmpty()) {
-                        typeAndTemperatureReturn[0] = HeatSourceCell.class.getName();
-                        typeAndTemperatureReturn[1] = temperatureInput.getText();
+                        if (temperatureInput.getText().matches("\\d+(\\.\\d+)?")) {
+                            double temperature = Double.parseDouble(temperatureInput.getText());
+                            if (temperature <= MAX_TEMP && temperature >= MIN_TEMP) {
+                                typeAndTemperatureReturn[TYPE_INDEX] = HeatSourceCell.class.getName();
+                                typeAndTemperatureReturn[TEMP_INDEX] = String.valueOf(temperature);
+                                answer = true;
+                            } else {
+                                Alert alert = new Alert(Alert.AlertType.ERROR);
+                                alert.setTitle("Error");
+                                alert.setHeaderText("temperature must be between 0.0 and 100.0");
+                                alert.showAndWait();
+                                answer = false;
+                            }
+                        } else {
+                            Alert alert = new Alert(Alert.AlertType.ERROR);
+                            alert.setTitle("Error");
+                            alert.setHeaderText("temperature must be between 0.0 and 100.0");
+                            alert.showAndWait();
+                            answer = false;
+                        }
                     } else {
                         Alert alert = new Alert(Alert.AlertType.ERROR);
                         alert.setTitle("Error");
                         alert.setHeaderText("temperature is not set");
                         alert.showAndWait();
+                        answer = false;
                     }
                 } else if (!heatSourceCheckBox.isSelected() && deadCellCheckBox.isSelected()) {
-                    typeAndTemperatureReturn[0] = DeadCell.class.getName();
+                    typeAndTemperatureReturn[TYPE_INDEX] = DeadCell.class.getName();
+                    answer = true;
                 } else if (!(deadCellCheckBox.isSelected() && heatSourceCheckBox.isSelected())) {
-                    typeAndTemperatureReturn[0] = Cell.class.getName();
+                    typeAndTemperatureReturn[TYPE_INDEX] = Cell.class.getName();
+                    answer = true;
                 }
-                window.close();
+
+                if (answer) {
+                    window.close();
+                }
             }
         });
 

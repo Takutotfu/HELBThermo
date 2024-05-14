@@ -106,11 +106,10 @@ public class ThermoController {
                 String[] cellType = CellView.display(cell);
 
                 try {
-                    cellsMap.replace(cell.getId(), cellFactory.create(cellType[0], cell.getX(), cell.getY(), Double.parseDouble(cellType[1])));
+                    cellsMap.replace(cell.getId(), cellFactory.create(cellType[CellView.TYPE_INDEX], cell.getX(), cell.getY(), Double.parseDouble(cellType[CellView.TEMP_INDEX])));
                 } catch (Exception ex) {
                     throw new RuntimeException(ex);
                 }
-
                 setCellButtonsActions();
 
                 if (isSimulationStarted) {
