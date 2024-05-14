@@ -14,7 +14,7 @@ public class ThermoSystem {
     public static double avgTemp = 0;
 
     public static void simulation(HashMap<String, Cell> cells) {
-        double newTemp = 0;
+        double newTemp;
 
         timer++;
         avgTemp = 0;
@@ -35,7 +35,7 @@ public class ThermoSystem {
             newTemp += getTemperature(cells, x - 1, y + 1); // Top right
             newTemp += getTemperature(cells, x + 1, y - 1); // Bottom left
             newTemp += getTemperature(cells, x + 1, y + 1); // Bottom Right
-            newTemp += (ThermoController.TEMP_EXT * outOfRangeCellNbr); // Ext Cell
+            newTemp += (ThermoController.tempExt * outOfRangeCellNbr); // Ext Cell
             newTemp /= maxCellNeighbors - deadCellNbr; // DeadCells
 
             if (cell instanceof HeatSourceCell) {
@@ -66,7 +66,7 @@ public class ThermoSystem {
             return neighborCell.getTemperature();
         } else {
             outOfRangeCellNbr++;
-            return ThermoController.TEMP_EXT;
+            return ThermoController.tempExt;
         }
     }
 

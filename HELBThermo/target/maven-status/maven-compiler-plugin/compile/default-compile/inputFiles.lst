@@ -5,6 +5,7 @@
 /media/sf_HELBThermo/src/main/java/com/example/helbthermo/ThermoController.java
 /media/sf_HELBThermo/src/main/java/com/example/helbthermo/Observable.java
 /media/sf_HELBThermo/src/main/java/com/example/helbthermo/ConfirmModificationView.java
+/media/sf_HELBThermo/src/main/java/com/example/helbthermo/TemperatureDataParser.java
 /media/sf_HELBThermo/src/main/java/com/example/helbthermo/DeadCell.java
 /media/sf_HELBThermo/src/main/java/module-info.java
 /media/sf_HELBThermo/src/main/java/com/example/helbthermo/Main.java

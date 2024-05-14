@@ -10,6 +10,6 @@ public class DeadCell extends Cell{
     // Securité pour ne pas changé de temperature
     @Override
     public void setTemperature(double temperature) {
-        super.setTemperature(0);
+        super.setTemperature(0.0);
     }
 }

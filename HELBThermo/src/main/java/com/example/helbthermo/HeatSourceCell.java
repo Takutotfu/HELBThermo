@@ -13,7 +13,9 @@ public class HeatSourceCell extends Cell {
 
     public boolean isActivated() {return isActivated;}
 
-    public void setActivated(boolean activated) {isActivated = activated;}
+    public void activate() {isActivated = true;}
+
+    public void deactivate() {isActivated = false;}
 
     public double getHeatTemperature() {return heatTemperature;}
 

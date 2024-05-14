@@ -17,13 +17,17 @@ public class ThermoController {
 
     public static final int COLUMN_CELL = 7;
     public static final int ROW_CELL = 7;
-    public static final int TEMP_EXT = 3; //°C
     public static final double ORIGINAL_HEAT_SOURCE_TEMPERATURE = 85.0;
 
+    public static double tempExt; //°C
+
+    private final String simulationDataFileName = "simul.data";
+    private final String logFolderName = "logs/";
     private final int timerDuration = 1;
 
     private final ThermoView view;
     private final CellFactory cellFactory;
+    private final TemperatureDataParser parser;
     private final HashMap<String, Cell> cellsMap;
 
     private boolean isSimulationStarted;
@@ -31,6 +35,8 @@ public class ThermoController {
     private String textLog;
 
     public ThermoController(ThermoView view) throws Exception {
+        this.parser = new TemperatureDataParser(simulationDataFileName);
+        tempExt = parser.getNextTemperature();
         this.timeline = new Timeline();
         this.isSimulationStarted = false;
         this.textLog = "";
@@ -75,7 +81,8 @@ public class ThermoController {
 
     private void startSimulation() {
         timeline = new Timeline(new KeyFrame(Duration.seconds(timerDuration), actionEvent -> {
-            view.setExtTempBox("T° ext. : " + TEMP_EXT + "°C");
+            tempExt = 3.0;
+            view.setExtTempBox("T° ext. : " + new DecimalFormat("#.##").format(tempExt) + "°C");
             view.setTimeBox("Temps : " + ThermoSystem.timer + "sec");
 
             ThermoSystem.simulation(cellsMap);
@@ -86,7 +93,7 @@ public class ThermoController {
             textLog += ThermoSystem.timer + ";"
                     + ThermoSystem.cost + ";"
                     + new DecimalFormat("#.##").format(ThermoSystem.avgTemp) + ";"
-                    + TEMP_EXT + "\n";
+                    + tempExt + "\n";
         }));
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
@@ -119,7 +126,7 @@ public class ThermoController {
         // Date formater https://www.w3schools.com/java/java_date.asp
         LocalDateTime myDateObj = LocalDateTime.now();
         DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("ddMMyy_HHmmss");
-        String filename = myDateObj.format(myFormatObj) + ".log";
+        String filename = logFolderName + myDateObj.format(myFormatObj) + ".log";
 
         try {
             File myObj = new File(filename);
