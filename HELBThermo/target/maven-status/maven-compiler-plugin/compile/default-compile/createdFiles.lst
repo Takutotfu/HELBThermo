@@ -9,6 +9,5 @@ com/example/helbthermo/Main.class
 com/example/helbthermo/Cell.class
 com/example/helbthermo/CellView.class
 com/example/helbthermo/TemperatureDataParser.class
-module-info.class
 com/example/helbthermo/Observer.class
 com/example/helbthermo/ThermoView.class

@@ -14,6 +14,8 @@
       <change afterPath="$PROJECT_DIR$/.mvn/wrapper/maven-wrapper.properties" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/logs/140524_162613.log" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/logs/140524_162725.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/logs/140524_162929.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/logs/140524_193708.log" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/mvnw" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/mvnw.cmd" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
@@ -32,10 +34,10 @@
       <change afterPath="$PROJECT_DIR$/src/main/java/com/example/helbthermo/ThermoController.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/java/com/example/helbthermo/ThermoSystem.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/java/com/example/helbthermo/ThermoView.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/module-info.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/resources/com/example/helbthermo/icons/pause.png" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/resources/com/example/helbthermo/icons/play.png" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/resources/com/example/helbthermo/icons/reset.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/example/helbthermo/TemperatureDataParserTest.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/test.sh" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -137,7 +139,7 @@
       <workItem from="1715611700207" duration="9347000" />
       <workItem from="1715625976086" duration="216000" />
       <workItem from="1715633374695" duration="5465000" />
-      <workItem from="1715687000837" duration="9854000" />
+      <workItem from="1715687000837" duration="13531000" />
     </task>
     <servers />
   </component>

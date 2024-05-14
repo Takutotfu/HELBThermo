@@ -15,7 +15,7 @@ public class TemperatureDataParser {
         maxIndex = temperatures.size();
     }
 
-    private boolean hasNextTemperature() {
+    public boolean hasNextTemperature() {
         return currentIndex < maxIndex - 1;
     }
 
@@ -49,5 +49,7 @@ public class TemperatureDataParser {
         }
     }
 
+    public int getMaxIndex() {return maxIndex;}
 
+    public int getCurrentIndex() {return currentIndex;}
 }
