@@ -6,8 +6,10 @@
 /media/sf_HELBThermo/src/main/java/com/example/helbthermo/Observable.java
 /media/sf_HELBThermo/src/main/java/com/example/helbthermo/ConfirmModificationView.java
 /media/sf_HELBThermo/src/main/java/com/example/helbthermo/TemperatureDataParser.java
+/media/sf_HELBThermo/src/main/java/com/example/helbthermo/SimulationSystem.java
 /media/sf_HELBThermo/src/main/java/com/example/helbthermo/DeadCell.java
+/media/sf_HELBThermo/src/main/java/com/example/helbthermo/ThermoSystemTarget.java
 /media/sf_HELBThermo/src/main/java/com/example/helbthermo/Main.java
-/media/sf_HELBThermo/src/main/java/com/example/helbthermo/ThermoSystem.java
+/media/sf_HELBThermo/src/main/java/com/example/helbthermo/ThermoSystemManual.java
 /media/sf_HELBThermo/src/main/java/com/example/helbthermo/Cell.java
 /media/sf_HELBThermo/src/main/java/com/example/helbthermo/ThermoView.java

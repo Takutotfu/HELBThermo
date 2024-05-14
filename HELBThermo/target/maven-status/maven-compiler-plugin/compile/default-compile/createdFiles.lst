@@ -1,13 +1,15 @@
 com/example/helbthermo/CellFactory.class
+com/example/helbthermo/ThermoSystemManual.class
 com/example/helbthermo/ConfirmModificationView.class
-com/example/helbthermo/ThermoSystem.class
 com/example/helbthermo/HeatSourceCell.class
 com/example/helbthermo/ThermoController.class
 com/example/helbthermo/DeadCell.class
 com/example/helbthermo/Observable.class
 com/example/helbthermo/Main.class
+com/example/helbthermo/ThermoSystemTarget.class
 com/example/helbthermo/Cell.class
 com/example/helbthermo/CellView.class
+com/example/helbthermo/SimulationSystem.class
 com/example/helbthermo/TemperatureDataParser.class
 com/example/helbthermo/Observer.class
 com/example/helbthermo/ThermoView.class

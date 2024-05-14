@@ -56,11 +56,10 @@ public class CellFactory {
             view.getHeatCellButton(key).setOnAction(e -> {
                 if (!heatSourceCell.isActivated()) {
                     heatSourceCell.activate();
-                    view.enableHeatSourceCell(key, heatSourceCell.getHeatTemperature());
                 } else {
                     heatSourceCell.deactivate();
-                    view.disableHeatSourceCell(key);
                 }
+                heatSourceCell.notifyObserver();
             });
 
             return heatSourceCell;

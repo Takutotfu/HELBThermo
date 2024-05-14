@@ -30,9 +30,12 @@ public class ThermoController {
     private final TemperatureDataParser parser;
     private final HashMap<String, Cell> cellsMap;
 
+    private int timer = 0;
+    private int cost = 0;
     private boolean isSimulationStarted;
     private Timeline timeline;
     private String textLog;
+    private SimulationSystem systemMode;
 
     public ThermoController(ThermoView view) throws Exception {
         this.parser = new TemperatureDataParser(simulationDataFileName);
@@ -40,6 +43,7 @@ public class ThermoController {
         this.timeline = new Timeline();
         this.isSimulationStarted = false;
         this.textLog = "";
+        this.systemMode = new ThermoSystemManual();
 
         this.view = view;
         view.initView();
@@ -49,13 +53,24 @@ public class ThermoController {
 
         setCellButtonsActions();
         setLeftButtonsActions();
+        setModeMenuActions();
         setStageCloseEvent();
     }
 
-    private void setStageCloseEvent() {
-        view.getStage().setOnCloseRequest(event -> {
-            createFile();
+    private void setModeMenuActions() {
+        view.getManualMode().setOnAction(event -> {
+            view.getModeMenu().setText("Mode Manuel");
+            systemMode = new ThermoSystemManual();
         });
+
+        view.getTargetMode().setOnAction(event -> {
+           view.getModeMenu().setText("Mode Target");
+           systemMode = new ThermoSystemTarget();
+        });
+    }
+
+    private void setStageCloseEvent() {
+        view.getStage().setOnCloseRequest(event -> createFile());
     }
 
     private void setLeftButtonsActions() {
@@ -74,25 +89,33 @@ public class ThermoController {
         });
 
         view.getResetButton().setOnAction(event -> {
-            ThermoSystem.resetSimulation();
+            timer = 0;
+            cost = 0;
             view.resetView();
         });
     }
 
     private void startSimulation() {
         timeline = new Timeline(new KeyFrame(Duration.seconds(timerDuration), actionEvent -> {
+            double avg;
+
+            timer++;
+            view.setTimeBox("Temps : " + timer + "sec");
+
             tempExt = parser.getNextTemperature();
             view.setExtTempBox("T° ext. : " + new DecimalFormat("#.##").format(tempExt) + "°C");
-            view.setTimeBox("Temps : " + ThermoSystem.timer + "sec");
 
-            ThermoSystem.simulation(cellsMap);
+            systemMode.simulation(cellsMap);
 
-            view.setPriceBox("€ : " + ThermoSystem.cost + "€");
-            view.setAvgTempBox("T° moy. : " + new DecimalFormat("#.##").format(ThermoSystem.avgTemp) + "°C");
+            avg = getAvgTemperature();
 
-            textLog += ThermoSystem.timer + ";"
-                    + ThermoSystem.cost + ";"
-                    + new DecimalFormat("#.##").format(ThermoSystem.avgTemp) + ";"
+            cost = getCalculatedCost();
+            view.setPriceBox("€ : " + cost + "€");
+            view.setAvgTempBox("T° moy. : " + new DecimalFormat("#.##").format(avg) + "°C");
+
+            textLog += timer + ";"
+                    + cost + ";"
+                    + new DecimalFormat("#.##").format(avg) + ";"
                     + tempExt + "\n";
         }));
         timeline.setCycleCount(Animation.INDEFINITE);
@@ -117,6 +140,27 @@ public class ThermoController {
                 }
             });
         }
+    }
+
+    private double getAvgTemperature() {
+        double avg = 0.0;
+        for (Cell cell : cellsMap.values()) {
+            avg += cell.getTemperature();
+        }
+        avg /= cellsMap.size();
+        return avg;
+    }
+
+    private int getCalculatedCost(){
+        int newCost = cost;
+        for (Cell cell : cellsMap.values()) {
+            if (cell instanceof HeatSourceCell) {
+                if (((HeatSourceCell) cell).isActivated()) {
+                    newCost += (int) (cell.getTemperature() * cell.getTemperature());
+                }
+            }
+        }
+        return newCost;
     }
 
     // Code basé sur W3 School https://www.w3schools.com/java/java_files_create.asp

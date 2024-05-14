@@ -2,23 +2,16 @@ package com.example.helbthermo;
 
 import java.util.HashMap;
 
-public class ThermoSystem {
+public class ThermoSystemManual implements SimulationSystem {
 
-    private static final int maxCellNeighbors = 9;
+    private final int maxCellNeighbors = 9;
 
-    private static int outOfRangeCellNbr = 0;
-    private static int deadCellNbr = 0;
+    private int outOfRangeCellNbr = 0;
+    private int deadCellNbr = 0;
 
-    public static int timer = 0;
-    public static int cost = 0;
-    public static double avgTemp = 0;
-
-    public static void simulation(HashMap<String, Cell> cells) {
+    @Override
+    public void simulation(HashMap<String, Cell> cells) {
         double newTemp;
-
-        timer++;
-        avgTemp = 0;
-        cost = 0;
 
         for (Cell cell : cells.values()) {
             int x = cell.getX();
@@ -39,24 +32,15 @@ public class ThermoSystem {
             newTemp /= maxCellNeighbors - deadCellNbr; // DeadCells
 
             if (cell instanceof HeatSourceCell) {
-                HeatSourceCell heatSourceCell = (HeatSourceCell) cell;
-                if (heatSourceCell.isActivated()) {
-                    newTemp = heatSourceCell.getHeatTemperature();
-                }
-                cost += (int) (timer * (cell.getTemperature() * cell.getTemperature()));
+                if (((HeatSourceCell) cell).isActivated()) newTemp = cell.getTemperature();
             }
 
             cell.setTemperature(newTemp);
-
             cell.notifyObserver();
-
-            avgTemp += newTemp;
         }
-
-        avgTemp /= ThermoController.COLUMN_CELL * ThermoController.ROW_CELL;
     }
 
-    private static double getTemperature(HashMap<String, Cell> cells, int x, int y) {
+    private double getTemperature(HashMap<String, Cell> cells, int x, int y) {
         String cellKey = x + "" + y;
         Cell neighborCell = cells.get(cellKey);
         if (neighborCell != null) {
@@ -68,11 +52,6 @@ public class ThermoSystem {
             outOfRangeCellNbr++;
             return ThermoController.tempExt;
         }
-    }
-
-    public static void resetSimulation() {
-        timer = 0;
-        cost = 0;
     }
 
 }

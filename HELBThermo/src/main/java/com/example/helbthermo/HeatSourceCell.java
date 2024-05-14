@@ -17,6 +17,13 @@ public class HeatSourceCell extends Cell {
 
     public void deactivate() {isActivated = false;}
 
-    public double getHeatTemperature() {return heatTemperature;}
+    @Override
+    public double getTemperature() {
+        if (isActivated) {
+            return heatTemperature;
+        } else {
+            return super.getTemperature();
+        }
+    }
 
 }
