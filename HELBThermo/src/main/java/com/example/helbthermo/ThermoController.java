@@ -81,7 +81,7 @@ public class ThermoController {
 
     private void startSimulation() {
         timeline = new Timeline(new KeyFrame(Duration.seconds(timerDuration), actionEvent -> {
-            tempExt = 3.0;
+            tempExt = parser.getNextTemperature();
             view.setExtTempBox("T° ext. : " + new DecimalFormat("#.##").format(tempExt) + "°C");
             view.setTimeBox("Temps : " + ThermoSystem.timer + "sec");
 

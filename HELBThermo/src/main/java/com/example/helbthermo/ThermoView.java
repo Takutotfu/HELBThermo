@@ -204,7 +204,6 @@ public class ThermoView implements Observer {
         Button cell = buttonCellMap.get(cellId);
         String text = cell.getText().substring(0, cell.getText().indexOf(':')+1);
         cell.setText(text + " " + new DecimalFormat("#.##").format(temperature));
-        System.out.println(text + " " + new DecimalFormat("#.##").format(temperature));
     }
 
     private void removeHeatCell(String cellId) {
@@ -272,8 +271,6 @@ public class ThermoView implements Observer {
                 createHeatCell(heatSourceCell.getId(), heatSourceCell.getTemperature());
                 reOrderHeatCell();
             }
-
-            System.out.println("Reorder heat cell");
         } else if (o instanceof DeadCell) {
             DeadCell deadCell = (DeadCell) o;
             removeHeatCell(deadCell.getId());

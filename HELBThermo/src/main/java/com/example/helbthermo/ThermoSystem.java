@@ -42,13 +42,19 @@ public class ThermoSystem {
                 HeatSourceCell heatSourceCell = (HeatSourceCell) cell;
                 if (heatSourceCell.isActivated()) {
                     newTemp = heatSourceCell.getHeatTemperature();
+                } else {
+                    cell.notifyObserver();
+
                 }
                 cost += (int) (timer * (cell.getTemperature() * cell.getTemperature()));
             }
 
             cell.setTemperature(newTemp);
 
-            cell.notifyObserver();
+            if (!(cell instanceof HeatSourceCell)) {
+                cell.notifyObserver();
+
+            }
 
             avgTemp += newTemp;
         }
