@@ -30,9 +30,8 @@ public class CellView {
     private static boolean isHeatSourceCheck = false;
     private static String[] typeAndTemperatureReturn;
 
-
     public static String[] display(Cell cell) {
-        String temperatureCell = new DecimalFormat("#.##").format(cell.getTemperature());
+        String temperatureCell = new DecimalFormat(ThermoView.NUMBER_FORMAT).format(cell.getTemperature());
         typeAndTemperatureReturn = new String[]{cell.getClass().getName(), temperatureCell};
 
         if (cell instanceof DeadCell) {

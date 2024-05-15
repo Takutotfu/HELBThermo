@@ -103,7 +103,7 @@ public class ThermoController {
             view.setTimeBox("Temps : " + timer + "sec");
 
             tempExt = parser.getNextTemperature();
-            view.setExtTempBox("T° ext. : " + new DecimalFormat("#.##").format(tempExt) + "°C");
+            view.setExtTempBox("T° ext. : " + new DecimalFormat(ThermoView.NUMBER_FORMAT).format(tempExt) + "°C");
 
             systemMode.simulation(cellsMap);
 
@@ -111,11 +111,11 @@ public class ThermoController {
 
             cost = getCalculatedCost();
             view.setPriceBox("€ : " + cost + "€");
-            view.setAvgTempBox("T° moy. : " + new DecimalFormat("#.##").format(avg) + "°C");
+            view.setAvgTempBox("T° moy. : " + new DecimalFormat(ThermoView.NUMBER_FORMAT).format(avg) + "°C");
 
             textLog += timer + ";"
                     + cost + ";"
-                    + new DecimalFormat("#.##").format(avg) + ";"
+                    + new DecimalFormat(ThermoView.NUMBER_FORMAT).format(avg) + ";"
                     + tempExt + "\n";
         }));
         timeline.setCycleCount(Animation.INDEFINITE);

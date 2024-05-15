@@ -17,6 +17,8 @@ import java.text.DecimalFormat;
 import java.util.HashMap;
 
 public class ThermoView implements Observer {
+    public static final String NUMBER_FORMAT = "#.##";
+
     private final int height = 720;
     private final int width = 1280;
     private final int spacing = 20;
@@ -24,6 +26,8 @@ public class ThermoView implements Observer {
     private final int maxGridpaneSize = 12;
     private final int minGridpaneSize = 3;
     private final int rgbMaxValue = 255;
+    private final String deactivateColor = "#4c4c4c";
+    private final String deadCellColor = "#000000";
 
     private final double cellSize = 100.0;
 
@@ -206,10 +210,14 @@ public class ThermoView implements Observer {
         }
     }
 
-    private void updateHeatCell(String cellId, double temperature) {
+    private void updateHeatCell(String cellId, double temperature, boolean isActivated) {
         Button cell = buttonCellMap.get(cellId);
         String text = cell.getText().substring(0, cell.getText().indexOf(':')+1);
-        cell.setText(text + " " + new DecimalFormat("#.##").format(temperature));
+        cell.setText(text + " " + new DecimalFormat(NUMBER_FORMAT).format(temperature));
+        if (isActivated) {
+            Button heatCellButton = buttonHeatCellMap.get(cellId);
+            heatCellButton.setText(cell.getText());
+        }
     }
 
     private void removeHeatCell(String cellId) {
@@ -223,18 +231,18 @@ public class ThermoView implements Observer {
     private void createDeadCell(String key) {
         Button cellButton = buttonCellMap.get(key);
         cellButton.setText("");
-        cellButton.setStyle("-fx-background-color: #000000; ");
+        cellButton.setStyle("-fx-background-color: " + deadCellColor);
     }
 
     private void updateCell(String cellId, double temp) {
         Button cell = buttonCellMap.get(cellId);
-        cell.setText(new DecimalFormat("#.##").format(temp));
+        cell.setText(new DecimalFormat(NUMBER_FORMAT).format(temp));
         cell.setStyle("-fx-background-color: " + toRGBCode(getColorFromIntensity(temp)));
     }
 
-    private Color getColorFromIntensity(double intensity) {
-        intensity = intensity / 100.0;
-        double redIntensity = ((1 - intensity) * rgbMaxValue);
+    private Color getColorFromIntensity(double intensityPurcentage) {
+        intensityPurcentage = intensityPurcentage / 100.0;
+        double redIntensity = ((1 - intensityPurcentage) * rgbMaxValue);
         return Color.rgb(rgbMaxValue, (int) redIntensity, (int) redIntensity);
     }
 
@@ -258,8 +266,8 @@ public class ThermoView implements Observer {
         Button buttonHeatCell = buttonHeatCellMap.get(cellId);
         Button cell = buttonCellMap.get(cellId);
 
-        buttonHeatCell.setStyle("-fx-background-color: #4c4c4c; ");
-        cell.setStyle("-fx-background-color: #4c4c4c; ");
+        buttonHeatCell.setStyle("-fx-background-color: " + deactivateColor);
+        cell.setStyle("-fx-background-color: " + deactivateColor);
     }
 
     public void resetView() {
@@ -274,7 +282,7 @@ public class ThermoView implements Observer {
             if (!buttonHeatCellMap.containsKey(heatSourceCell.getId())) {
                 createHeatCell(heatSourceCell.getId(), heatSourceCell.getTemperature());
             } else {
-                updateHeatCell(heatSourceCell.getId(), heatSourceCell.getTemperature());
+                updateHeatCell(heatSourceCell.getId(), heatSourceCell.getTemperature(), heatSourceCell.isActivated());
             }
 
             if (!heatSourceCell.isActivated()) {
