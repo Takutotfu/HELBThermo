@@ -12,8 +12,10 @@ import javafx.stage.Stage;
 
 import java.text.DecimalFormat;
 
-// TODO : Comment code
+// Classe pour gérer l'affichage de la fenetre de configuration d'une cellule
 public class CellView {
+
+    // Attributs de configuration de la classe
     public static final int TYPE_INDEX = 0;
     public static final int TEMP_INDEX = 1;
 
@@ -23,6 +25,7 @@ public class CellView {
     private static final double MAX_TEMP = 100.0;
     private static final double MIN_TEMP = 0.0;
 
+    // Attributs de la classe
     private static boolean isModificationCanceled = false;
     private static boolean answer = true;
 
@@ -30,6 +33,7 @@ public class CellView {
     private static boolean isHeatSourceCheck = false;
     private static String[] typeAndTemperatureReturn;
 
+    // Méthode pour afficher la fenetre de configuration de la cellule
     public static String[] display(Cell cell) {
         String temperatureCell = new DecimalFormat(ThermoView.NUMBER_FORMAT).format(cell.getTemperature());
         typeAndTemperatureReturn = new String[]{cell.getClass().getName(), temperatureCell};

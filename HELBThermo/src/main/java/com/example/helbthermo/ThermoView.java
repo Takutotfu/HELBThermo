@@ -17,8 +17,10 @@ import java.text.DecimalFormat;
 import java.util.HashMap;
 
 public class ThermoView implements Observer {
+    // Attributs public static de la classe
     public static final String NUMBER_FORMAT = "#.##";
 
+    // Attributs de configurations de l'affichage
     private final int height = 720;
     private final int width = 1280;
     private final int spacing = 20;
@@ -30,7 +32,9 @@ public class ThermoView implements Observer {
     private final String deadCellColor = "#000000";
 
     private final double cellSize = 100.0;
+    private final double heatCellButtonSize = 100.0;
 
+    // Attributs de la classe
     private final HashMap<String, Button> buttonCellMap;
     private final HashMap<String, Button> buttonHeatCellMap;
     private final Stage stage;
@@ -42,12 +46,15 @@ public class ThermoView implements Observer {
     private MenuItem manualMode, targetMode;
 
     public ThermoView(Stage stage) {
+        // Constructeur de la Vue
         this.stage = stage;
         this.buttonCellMap = new HashMap<>();
         this.buttonHeatCellMap = new HashMap<>();
     }
 
     public void initView() {
+        // Initialisation de la Vue
+
         BorderPane root = new BorderPane();
         root.setPrefSize(width, height);
 
@@ -76,7 +83,10 @@ public class ThermoView implements Observer {
         stage.show();
     }
 
+
     private void initCenterGridPane(BorderPane root) {
+        // Initialisation de chaque coté de l'interface
+
         GridPane centerGrid = new GridPane();
         centerGrid.setAlignment(Pos.CENTER);
         centerGrid.setHgap(spacing / 4.0);
@@ -106,6 +116,8 @@ public class ThermoView implements Observer {
     }
 
     private void initLeftHBox(BorderPane root) {
+        // Initialisation du coté gauche
+
         VBox leftBox = new VBox();
         leftBox.setAlignment(Pos.CENTER);
         leftBox.setPrefWidth(10 * spacing);
@@ -147,6 +159,8 @@ public class ThermoView implements Observer {
     }
 
     private void initTopHBox(BorderPane root) {
+        // Initialisation du haut de la fenetre
+
         HBox topBox = new HBox(spacing);
         topBox.setSpacing(spacing);
         topBox.setPrefHeight(5 * spacing);
@@ -182,6 +196,8 @@ public class ThermoView implements Observer {
     }
 
     private void createHeatCell(String cellId, double temp) {
+        // Affichage du bouton activer/desactiver d'une source de chaleur
+
         Button cell = buttonCellMap.get(cellId);
 
         cell.setText("s" + (buttonHeatCellMap.size() + 1) + " : " + temp);
@@ -189,7 +205,7 @@ public class ThermoView implements Observer {
 
         Button button = new Button(buttonCellMap.get(cellId).getText());
         button.setStyle(buttonCellMap.get(cellId).getStyle());
-        button.setPrefSize(cellSize*1.5, cellSize*1.5);
+        button.setPrefSize(heatCellButtonSize, heatCellButtonSize);
 
         buttonHeatCellMap.put(cellId, button);
         heatCellsBox.getChildren().add(button);
@@ -197,6 +213,8 @@ public class ThermoView implements Observer {
     }
 
     private void reOrderHeatCell() {
+        // Réorganisation de l'ordre d'affichage des sources de chaleur
+
         if (!buttonHeatCellMap.isEmpty()) {
             int cpt = 0;
             for (String id : buttonHeatCellMap.keySet()) {
@@ -211,6 +229,8 @@ public class ThermoView implements Observer {
     }
 
     private void updateHeatCell(String cellId, double temperature, boolean isActivated) {
+        // mise à jour des sources de chaleur
+
         Button cell = buttonCellMap.get(cellId);
         String text = cell.getText().substring(0, cell.getText().indexOf(':')+1);
         cell.setText(text + " " + new DecimalFormat(NUMBER_FORMAT).format(temperature));
@@ -221,6 +241,8 @@ public class ThermoView implements Observer {
     }
 
     private void removeHeatCell(String cellId) {
+        // Suppression de l'affichage d'une source de chaleur
+
         if (buttonHeatCellMap.containsKey(cellId)) {
             heatCellsBox.getChildren().remove(buttonHeatCellMap.get(cellId));
             buttonHeatCellMap.remove(cellId);
@@ -229,24 +251,32 @@ public class ThermoView implements Observer {
     }
 
     private void createDeadCell(String key) {
+        // Affichage d'une cellule morte
+
         Button cellButton = buttonCellMap.get(key);
         cellButton.setText("");
         cellButton.setStyle("-fx-background-color: " + deadCellColor);
     }
 
     private void updateCell(String cellId, double temp) {
+        // Mise à jour d'une cellule de base
+
         Button cell = buttonCellMap.get(cellId);
         cell.setText(new DecimalFormat(NUMBER_FORMAT).format(temp));
         cell.setStyle("-fx-background-color: " + toRGBCode(getColorFromIntensity(temp)));
     }
 
     private Color getColorFromIntensity(double intensityPurcentage) {
+        // Calcule de la valeur RGB a partir d'un facteur intensité
+
         intensityPurcentage = intensityPurcentage / 100.0;
         double redIntensity = ((1 - intensityPurcentage) * rgbMaxValue);
         return Color.rgb(rgbMaxValue, (int) redIntensity, (int) redIntensity);
     }
 
     private String toRGBCode(Color color) {
+        // Conversion d'une couleur en un String RGB
+
         int r = (int) (color.getRed() * rgbMaxValue);
         int g = (int) (color.getGreen() * rgbMaxValue);
         int b = (int) (color.getBlue() * rgbMaxValue);
@@ -254,6 +284,8 @@ public class ThermoView implements Observer {
     }
 
     public void enableHeatSourceCell(String cellId, double temp) {
+        // Affichage d'une source de chaleur activée
+
         Button buttonHeatCell = buttonHeatCellMap.get(cellId);
         Button cell = buttonCellMap.get(cellId);
 
@@ -263,6 +295,8 @@ public class ThermoView implements Observer {
     }
 
     public void disableHeatSourceCell(String cellId) {
+        // Affichage d'une source de chaleur désactivée
+
         Button buttonHeatCell = buttonHeatCellMap.get(cellId);
         Button cell = buttonCellMap.get(cellId);
 
@@ -271,10 +305,13 @@ public class ThermoView implements Observer {
     }
 
     public void resetView() {
+        // Réinitialisation de l'affichage du temps et du cout
+
         timeBox.setText("Temps : 0sec");
         priceBox.setText("€ : 0€");
     }
 
+    // Implementation de l'interface Observer
     @Override
     public void update(Object o) {
         if (o instanceof HeatSourceCell) {

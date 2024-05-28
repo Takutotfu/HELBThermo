@@ -5,6 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7673aaa7-ed22-4307-8c62-e799aabe7b18" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/../Docs/Rapport/~$pport de projet Java IV - HELBThermo.docx" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/.idea/discord.xml" afterDir="false" />
@@ -13,40 +14,25 @@
       <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/.mvn/wrapper/maven-wrapper.jar" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/.mvn/wrapper/maven-wrapper.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/logs/150524_031235.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/logs/150524_034246.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/logs/150524_140428.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/logs/150524_140629.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/logs/150524_141352.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/logs/150524_141413.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/logs/150524_141551.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/logs/150524_142122.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/logs/150524_143511.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/logs/150524_143709.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/logs/150524_153815.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/logs/150524_155743.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/logs/150524_155953.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/logs/150524_160053.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/logs/150524_160102.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/logs/150524_160114.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/logs/150524_160131.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/logs/150524_161545.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/logs/150524_161551.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/logs/150524_161558.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/logs/150524_161717.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/logs/150524_161818.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/logs/150524_161945.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/logs/150524_162156.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/logs/150524_162202.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/logs/150524_162251.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/logs/150524_162346.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/logs/150524_162821.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/logs/150524_162827.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/logs/150524_163129.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/logs/150524_163205.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/logs/150524_163235.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/logs/150524_163241.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/logs/150524_163312.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/logs/150524_170546.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/logs/160524_003150.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/logs/200524_003238.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/logs/200524_003311.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/logs/230524_194433.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/logs/230524_194631.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/logs/230524_194812.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/logs/230524_195413.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/logs/230524_233138.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/logs/230524_233218.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/logs/230524_233622.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/logs/230524_233718.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/logs/280524_215707.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/logs/280524_232327.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/logs/280524_232342.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/logs/280524_232351.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/logs/280524_232400.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/logs/280524_232407.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/logs/280524_232417.log" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/mvnw" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/mvnw.cmd" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
@@ -72,6 +58,10 @@
       <change afterPath="$PROJECT_DIR$/src/main/resources/com/example/helbthermo/icons/reset.png" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/test/java/com/example/helbthermo/TemperatureDataParserTest.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/test.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../HELBThermo.drawio" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Projet Java IV - HELBThermo 2324 - Addenda II.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Projet Java IV - HELBThermo 2324 - Addenda.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Projet Java IV - HELBThermo 2324.pdf" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -88,6 +78,9 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/src/main/java/com/example/helbthermo/ThermoController.java" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="MavenImportPreferences">
     <option name="generalSettings">
@@ -179,6 +172,9 @@
       <workItem from="1715687000837" duration="24838000" />
       <workItem from="1715738007347" duration="280000" />
       <workItem from="1715773811689" duration="9297000" />
+      <workItem from="1716158049324" duration="188000" />
+      <workItem from="1716485600469" duration="17161000" />
+      <workItem from="1716922779811" duration="7591000" />
     </task>
     <servers />
   </component>

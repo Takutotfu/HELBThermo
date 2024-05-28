@@ -3,15 +3,18 @@ package com.example.helbthermo;
 import java.util.ArrayList;
 import java.util.List;
 
+// Modele representant une cellule du system
 public class Cell implements Observable {
+    // Attributs de Cell
+    private final List<Observer> observers;
+
     private final String id;
     private final int x;
     private final int y;
 
     private double temperature;
 
-    private final List<Observer> observers;
-
+    // Constructeur
     public Cell(int x, int y) {
         this.id = ""+x+y;
         this.x = x;
@@ -20,16 +23,7 @@ public class Cell implements Observable {
         this.observers = new ArrayList<>();
     }
 
-    public int getX() { return x; }
-
-    public int getY() { return y; }
-
-    public double getTemperature() { return temperature; }
-
-    public void setTemperature(double temperature) { this.temperature = temperature; }
-
-    public String getId() {return id;}
-
+    // Implementation d'Observable
     @Override
     public void attach(Observer o) {
         observers.add(o);
@@ -46,4 +40,11 @@ public class Cell implements Observable {
             o.update(this);
         }
     }
+
+    // Getter & Setter
+    public int getX() { return x; }
+    public int getY() { return y; }
+    public double getTemperature() { return temperature; }
+    public void setTemperature(double temperature) { this.temperature = temperature; }
+    public String getId() {return id;}
 }

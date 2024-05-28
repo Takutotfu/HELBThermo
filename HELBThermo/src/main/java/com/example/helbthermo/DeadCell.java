@@ -1,7 +1,9 @@
 package com.example.helbthermo;
 
+// Modele representant une cellule morte du system
 public class DeadCell extends Cell{
 
+    // Constructeur
     public DeadCell(int x, int y) {
         super(x, y);
         setTemperature(0);

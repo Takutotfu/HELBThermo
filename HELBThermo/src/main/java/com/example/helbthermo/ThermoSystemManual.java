@@ -2,13 +2,16 @@ package com.example.helbthermo;
 
 import java.util.HashMap;
 
+// Représente le mode de chauffe manuel
 public class ThermoSystemManual implements SimulationSystem {
 
+    // Attributs de la classe
     private final int maxCellNeighbors = 9;
 
     private int outOfRangeCellNbr = 0;
     private int deadCellNbr = 0;
 
+    // Méthode qui gere le comportement de la simulation du system
     @Override
     public void simulation(HashMap<String, Cell> cells) {
         double newTemp;
@@ -40,6 +43,7 @@ public class ThermoSystemManual implements SimulationSystem {
         }
     }
 
+    // Méthode qui calcule la nouvelle température de chaque cellules
     private double getTemperature(HashMap<String, Cell> cells, int x, int y) {
         String cellKey = x + "" + y;
         Cell neighborCell = cells.get(cellKey);

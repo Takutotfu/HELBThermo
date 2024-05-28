@@ -6,15 +6,20 @@ import java.util.List;
 import java.util.Random;
 
 public class CellFactory {
-    private final ThermoView view;
+    // Attributs de configuration
     private final int maxDeadCellsNbr = 3;
+
+    // Attributs de la classe
+    private final ThermoView view;
 
     private List<HeatSourceCell> heatSourceCells = new ArrayList<>();
 
+    // Constructeur de la classe
     public CellFactory(ThermoView view) {
         this.view = view;
     }
 
+    // Méthode pour créer les cellules de l'applications
     public HashMap<String, Cell> createCells() throws Exception {
         HashMap<String, Cell> cellsMap = new HashMap<>();
         Cell newCell;
@@ -42,6 +47,7 @@ public class CellFactory {
         return cellsMap;
     }
 
+    // Méthodes pour créer les cellules mortes de facon aléatoires avec certains facteurs impactant
     private void createDeadCells(HashMap<String, Cell> cellsMap) throws Exception {
         Random random = new Random();
         int centreX = ThermoController.ROW_CELL / 2;
@@ -78,8 +84,7 @@ public class CellFactory {
         }
     }
 
-
-
+    // méthode pour créer une cellule en fonction de son type
     public Cell create(String cellType, int x, int y, double temperature) throws Exception {
         String key = "" + x + y;
 

@@ -15,12 +15,15 @@ import java.util.HashMap;
 
 public class ThermoController {
 
-    public static final int COLUMN_CELL = 7;
-    public static final int ROW_CELL = 7;
+    // Attributs de configuration
+    public static final int COLUMN_CELL = 5;
+    public static final int ROW_CELL = 4;
     public static final double ORIGINAL_HEAT_SOURCE_TEMPERATURE = 85.0;
 
+    // Attribut public
     public static double tempExt; //°C
 
+    // Attributs private final
     private final String simulationDataFileName = "simul.data";
     private final String logFolderName = "logs/";
     private final int timerDuration = 1;
@@ -30,6 +33,7 @@ public class ThermoController {
     private final TemperatureDataParser parser;
     private final HashMap<String, Cell> cellsMap;
 
+    // Attributs de la classe
     private int timer = 0;
     private int cost = 0;
     private boolean isSimulationStarted;
@@ -37,20 +41,29 @@ public class ThermoController {
     private String textLog;
     private SimulationSystem systemMode;
 
+    // Constructeur de la classe
     public ThermoController(ThermoView view) throws Exception {
+        // Instanciation du parser
         this.parser = new TemperatureDataParser(simulationDataFileName);
         tempExt = parser.getNextTemperature();
+
+        // Instanciation de la timeline et initialisation de variables
         this.timeline = new Timeline();
         this.isSimulationStarted = false;
         this.textLog = "";
+
+        // Instanciation de la Strategy
         this.systemMode = new ThermoSystemManual();
 
+        // Initialisation de la vue
         this.view = view;
         view.initView();
 
+        // Instanciation de la Factory et création des cellules instancié dans la cellsMap
         this.cellFactory = new CellFactory(view);
         this.cellsMap = cellFactory.createCells();
 
+        // Gestion des setOnActions de tout les boutons de l'application
         setCellButtonsActions();
         setLeftButtonsActions();
         setModeMenuActions();
@@ -58,22 +71,25 @@ public class ThermoController {
     }
 
     private void setModeMenuActions() {
-        view.getManualMode().setOnAction(event -> {
+        // MenuButtons du mode de chauffe
+        view.getManualMode().setOnAction(e -> {
             view.getModeMenu().setText("Mode Manuel");
             systemMode = new ThermoSystemManual();
         });
 
-        view.getTargetMode().setOnAction(event -> {
+        view.getTargetMode().setOnAction(e -> {
            view.getModeMenu().setText("Mode Target");
            systemMode = new ThermoSystemTarget();
         });
     }
 
     private void setStageCloseEvent() {
-        view.getStage().setOnCloseRequest(event -> createFile());
+        // Gestion de la fermeture de l'application
+        view.getStage().setOnCloseRequest(e -> createFile());
     }
 
     private void setLeftButtonsActions() {
+        // Boutons play, pause et reset
         view.getPlayButton().setOnAction(event -> {
             if (!isSimulationStarted) {
                 startSimulation();
@@ -96,6 +112,7 @@ public class ThermoController {
     }
 
     private void startSimulation() {
+        // Méthodes qui gère le lancement de la simulation
         timeline = new Timeline(new KeyFrame(Duration.seconds(timerDuration), actionEvent -> {
             double avg;
 
@@ -123,6 +140,7 @@ public class ThermoController {
     }
 
     private void setCellButtonsActions() {
+        // Toutes les cellules du tableaux
         for (Cell cell : cellsMap.values()) {
             view.getCellButton(cell.getId()).setOnAction(e -> {
                 timeline.pause();
@@ -143,15 +161,21 @@ public class ThermoController {
     }
 
     private double getAvgTemperature() {
+        // Calcule la temperature moyenne du systeme
+        int deadCells = 0;
         double avg = 0.0;
         for (Cell cell : cellsMap.values()) {
+            if (cell instanceof DeadCell) {
+                deadCells++;
+            }
             avg += cell.getTemperature();
         }
-        avg /= cellsMap.size();
+        avg /= cellsMap.size() - deadCells;
         return avg;
     }
 
     private int getCalculatedCost(){
+        // Calcule le coût du systeme
         int newCost = cost;
         for (Cell cell : cellsMap.values()) {
             if (cell instanceof HeatSourceCell) {

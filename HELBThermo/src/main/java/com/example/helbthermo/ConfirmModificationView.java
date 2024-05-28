@@ -9,13 +9,17 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+// Classe pour gérer l'affichage d'une fenetre popup de confirmation
 public class ConfirmModificationView {
 
+    // Attributs de configuration
     private static final int WIDTH = 300;
     private static final int SPACING = 10;
 
+    // Attributs de la classe
     private static boolean answer = false;
 
+    // Méthodes pour afficher la fenetre
     public static boolean display() {
         answer = false;
 
