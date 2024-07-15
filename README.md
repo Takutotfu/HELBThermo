@@ -22,6 +22,7 @@
 4. 📄 [Design Patterns Analysis](#design-patterns-analysis)
 5. 📉 [Limitations](#limitations)
 6. 🧠 [Conclusion](#conclusion)
+7. 🖥️ [Installation](#installation)
 
 ## 👋 <a name="introduction">Introduction</a>
 
@@ -80,3 +81,30 @@ The application is built on an MVC architecture for maintainability and clarity:
 
 This project has been a valuable learning experience in applying design patterns and developing Java applications with graphical interfaces using JavaFX. The implementation adheres to MVC, Observer, Strategy, and Factory patterns, ensuring a robust and maintainable application structure. Future work could further enhance the application's functionality and stability.
 
+## <a name="installation">🖥️ Installation</a>
+
+Download the main archive and unzip the `HELBThermo`.
+<div align='center'>  
+  <img src='https://takutotofu.s-ul.eu/Ylhza7xj' alt='tuto1' />
+</div>
+
+### 🪟 For Windows
+
+You need to download <a href='https://gluonhq.com/products/javafx/'><b>JavaFX library</b></a>, extract the folder into `C:\Program Files\Java` (create folder if needed) and
+edit `run.bat` file to set the path of your JavaFX lib folder :
+
+<div align='center'>
+  <img src='https://takutotofu.s-ul.eu/fTJeZWxE' alt='tuto2' />
+</div>
+
+### 🐧 For Linux
+
+You need to run this command :
+
+```bash
+sudo apt-get install openjfx
+````
+
+or download it on this <a href='https://gluonhq.com/products/javafx/'><b>site</b></a> and extract it into `${JAVA_HOME}/lib/`.
+
+So use the `run.bash` instead.
