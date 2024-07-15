@@ -1,6 +1,6 @@
 <div align="center">
   <div>
-    <img src='https://takutotofu.s-ul.eu/ggc7MFq8' alt='thermodynamics'/>
+    <img src='https://takutotofu.s-ul.eu/kDrJCxzY' alt='thermodynamics'/>
   </div>
   <h3 align="center">A JavaFX School Project</h3>
 
